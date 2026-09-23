@@ -1,0 +1,12 @@
+{
+  "id": "./",
+  "name": "INKWELL — Handwriting & Drawing",
+  "short_name": "INKWELL",
+  "description": "A private handwriting and drawing studio. Make a mark, take it with you.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#eeeae2",
+  "theme_color": "#243d36",
+  "icons": [{"src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}]
+}

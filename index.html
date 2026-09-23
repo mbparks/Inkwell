@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="en" data-theme="light" data-mode="easy">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#243d36">
+<meta name="description" content="INKWELL: a private, local-first handwriting and drawing studio. Draw with a mouse, finger, or pen; export images and editable projects.">
+<title>INKWELL — Make your mark</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23243d36'/%3E%3Cpath d='M18 45L25 23L45 16L39 37Z' fill='%23f4e9cc'/%3E%3Cpath d='M18 45L32 31' stroke='%23243d36' stroke-width='3'/%3E%3Ccircle cx='33' cy='30' r='3' fill='%23243d36'/%3E%3C/svg%3E">
+<style>
+:root{color-scheme:light;--bg:#eeeae2;--panel:#fcfaf5;--paper:#fffdf7;--ink:#243d36;--muted:#626960;--line:#d6d7cc;--soft:#e9eddf;--accent:#b64027;--accent-ink:#fffaf2;--green:#275e41;--workspace:#e5e4da;--shadow:0 14px 42px #25302a15;--ring:#ad4326;--modal:rgba(24,35,29,.42);--checker:#d4d4ce;--stage-dot:#bec6b7;--error:#a22e24;--warn:#865300;--good:#237247;font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px}
+[data-theme=dark]{color-scheme:dark;--bg:#171f1d;--panel:#202b27;--ink:#f1edde;--muted:#b0b8aa;--line:#405046;--soft:#34443a;--accent:#ef956b;--accent-ink:#17241e;--green:#abd49e;--workspace:#17201c;--shadow:0 14px 42px #0005;--ring:#ffd093;--modal:rgba(0,0,0,.62);--stage-dot:#384b3c;--checker:#bcbeb6;--error:#ffb1a6;--warn:#fbd478;--good:#a3d9ad}
+[data-theme=contrast]{color-scheme:dark;--bg:#000;--panel:#000;--ink:#fff;--muted:#eee;--line:#fff;--soft:#252525;--accent:#ffff00;--accent-ink:#000;--green:#00ff98;--workspace:#181818;--shadow:none;--ring:#00e6ff;--modal:rgba(0,0,0,.85);--stage-dot:#666;--checker:#bbb;--error:#ff9c9c;--warn:#fff600;--good:#00ff98}
+*{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden}body{background:var(--bg);color:var(--ink);overscroll-behavior:none}button,input,select,textarea{font:inherit}button,a,input,select,textarea{touch-action:manipulation}button{color:var(--ink);background:transparent;border:1px solid transparent;border-radius:8px;cursor:pointer;min-height:40px;padding:8px 12px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:600;transition:background .12s,border-color .12s}button:hover:not(:disabled){background:var(--soft)}button:disabled{opacity:.4;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--ring);outline-offset:3px}button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}button.primary:hover:not(:disabled){filter:brightness(1.08);background:var(--accent)}button.secondary{border-color:var(--line);background:var(--panel)}button.danger{color:var(--error)}input:not([type=range]):not([type=checkbox]):not([type=color]),select,textarea{width:100%;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:7px;min-height:40px;padding:8px 10px}input[type=color]{width:42px;height:40px;border:1px solid var(--line);border-radius:7px;padding:4px;background:var(--panel);cursor:pointer}input[type=range]{width:100%;accent-color:var(--green);min-height:24px;margin:6px 0}input[type=checkbox]{accent-color:var(--green);width:18px;height:18px;flex-shrink:0}label{display:block;font-size:12px;font-weight:650;margin-bottom:8px}.check{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:500;line-height:1.45;margin:12px 0}.check input{margin:0}svg.icon{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}.icon-btn{width:40px;padding:9px;flex-shrink:0}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}[hidden]{display:none!important}.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.muted{color:var(--muted)}.small{font-size:12px;line-height:1.5}.eyebrow{font-size:10px;font-weight:750;letter-spacing:1.7px;text-transform:uppercase}.row{display:flex;align-items:center;gap:8px}.between{justify-content:space-between}.stack{display:grid;gap:10px}.rule{height:1px;background:var(--line);margin:16px 0}.kbd{border:1px solid var(--line);border-radius:4px;padding:2px 5px;font-size:11px;font-family:ui-monospace,monospace;color:var(--muted)}
+#app{height:100vh;height:100dvh;display:flex;flex-direction:column}.topbar{height:78px;flex-shrink:0;padding:10px 23px;display:flex;align-items:center;gap:18px;border-bottom:1px solid var(--line);background:var(--panel);z-index:5}.brand{display:flex;align-items:center;gap:11px;min-width:240px}.brand-mark{width:42px;height:46px;border-radius:12px 12px 18px 18px;background:var(--ink);color:var(--panel);display:grid;place-items:center;transform:rotate(-5deg)}.brand-mark svg{width:28px;height:28px}.brand-name{font-size:25px;font-weight:900;letter-spacing:1px;line-height:1.15}.brand-sub{font-size:9px;letter-spacing:1.45px;font-weight:650;margin-top:4px;color:var(--muted)}.project-name{min-width:100px;max-width:320px;flex:1}.project-name input{background:transparent!important;border-color:transparent!important;padding-left:4px!important;font-size:15px;font-weight:550;min-height:32px!important}.project-name input:hover,.project-name input:focus{border-color:var(--line)!important}.save-line{font-size:10px;color:var(--muted);display:flex;align-items:center;gap:6px;white-space:nowrap;padding-left:5px}.led{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--good)}.led[data-state=dirty],.led[data-state=saving]{background:var(--warn)}.led[data-state=error]{background:var(--error)}.top-actions{margin-left:auto;display:flex;align-items:center;gap:7px}.mode-switch{display:flex;background:var(--bg);border:1px solid var(--line);padding:3px;border-radius:8px;margin-right:4px}.mode-switch button{min-height:30px;padding:5px 9px;font-size:12px;font-weight:600}.mode-switch button[aria-pressed=true]{background:var(--panel);box-shadow:0 1px 3px #0001}.top-actions>.primary{min-width:126px}.workspace{flex:1;min-height:0;display:grid;grid-template-columns:70px minmax(0,1fr) 268px;position:relative}.toolrail{display:flex;flex-direction:column;align-items:center;gap:7px;padding:18px 8px;background:var(--panel);border-right:1px solid var(--line);z-index:4;overflow-y:auto;scrollbar-width:thin}.tool{width:48px;min-height:53px;flex-shrink:0;display:flex;flex-direction:column;gap:3px;padding:6px 3px;border-radius:9px;font-size:9px;color:var(--muted);font-weight:600}.tool svg{width:22px;height:22px}.tool[aria-pressed=true]{background:var(--soft);color:var(--ink);border-color:var(--line)}.tool[aria-pressed=true] svg{stroke-width:2}.rail-separator{width:27px;height:1px;background:var(--line);margin:3px 0;flex-shrink:0}.toolrail .spacer{flex:1;min-height:5px}.board{min-width:0;min-height:0;display:flex;flex-direction:column;position:relative;background:var(--workspace)}.boardbar{height:48px;min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:5px 20px;border-bottom:1px solid var(--line);background:var(--bg);font-size:11px}.paper-label{display:flex;align-items:center;gap:9px;min-width:0}.paper-label span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.quiet-pill{font-size:10px;padding:4px 7px;border:1px solid var(--line);border-radius:4px;letter-spacing:.8px;white-space:nowrap}.boardbar button{min-height:32px;height:32px}.stage{flex:1;min-height:100px;position:relative;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;background-image:radial-gradient(var(--stage-dot) .75px,transparent .75px);background-size:18px 18px;cursor:crosshair;isolation:isolate}.stage.panning{cursor:grabbing!important}.sheet{position:absolute;left:0;top:0;transform-origin:0 0;background-color:#fffdf7;box-shadow:0 3px 8px #20251c12,0 18px 55px #26312522;overflow:hidden;pointer-events:none}.sheet.transparent{background-color:#f2f2ed;background-image:linear-gradient(45deg,var(--checker) 25%,transparent 25%),linear-gradient(-45deg,var(--checker) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,var(--checker) 75%),linear-gradient(-45deg,transparent 75%,var(--checker) 75%);background-size:24px 24px;background-position:0 0,0 12px,12px -12px,-12px 0}.sheet canvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}.empty-hint{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;gap:13px;color:#848b7b}.empty-hint svg{width:45px;height:45px;opacity:.55}.empty-hint strong{font-family:Georgia,serif;font-size:28px;font-style:italic;font-weight:normal}.empty-hint span{font-size:12px;letter-spacing:.2px}.viewbar{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:2px;align-items:center;padding:4px 6px;border:1px solid var(--line);border-radius:10px;background:var(--panel);box-shadow:var(--shadow);z-index:3}.viewbar button{height:34px;min-height:34px;padding:5px 8px;font-size:11px}.viewbar .icon-btn{width:33px}.viewbar svg{width:16px;height:16px}.viewbar .divider{width:1px;background:var(--line);height:20px;margin:0 4px}.bottomline{height:32px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:10px;color:var(--muted);border-top:1px solid var(--line);background:var(--bg);gap:12px}.inspector{border-left:1px solid var(--line);background:var(--panel);padding:19px 19px 14px;overflow-y:auto;scrollbar-width:thin;z-index:6}.inspector-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:17px}.inspector-title h2{font-size:13px;letter-spacing:.1px;margin:0}.inspector-title .badge{font-size:9px;letter-spacing:1px;border:1px solid var(--line);padding:4px 6px;border-radius:4px;color:var(--muted)}.field{margin-bottom:18px}.field-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;gap:8px}.field-heading label{margin:0}.field-heading output{font-size:11px;font-family:ui-monospace,monospace;color:var(--muted)}.swatches{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:10px}.swatch{width:30px;min-height:30px;height:30px;border-radius:50%;padding:0;background:var(--swatch)!important;border:3px solid var(--panel);outline:1px solid var(--line);position:relative}.swatch[aria-pressed=true]{outline:2px solid var(--ink)}.swatch[aria-pressed=true]::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--swatch);border:1px solid white;box-shadow:0 0 0 1px #333}.color-field{display:flex;align-items:center;gap:8px}.color-field input[type=text]{font-size:12px;font-family:ui-monospace,monospace}.brush-preview{height:46px;background:var(--bg);border:1px solid var(--line);border-radius:7px;margin:13px 0 16px;overflow:hidden}.brush-preview svg{width:100%;height:100%}.size-chips{display:flex;gap:6px;margin-top:4px}.size-chips button{min-height:32px;flex:1;border:1px solid var(--line);font-size:11px;padding:4px}.size-chips button.active{background:var(--soft)}details{border-top:1px solid var(--line);padding:14px 0 0;margin-top:15px}summary{cursor:pointer;font-size:12px;font-weight:700;margin-bottom:15px;display:flex;justify-content:space-between;align-items:center;list-style:none}summary::-webkit-details-marker{display:none}summary::after{content:'+';font-size:17px;color:var(--muted)}details[open]>summary::after{content:'−'}.paper-options{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.paper-option{min-height:46px;display:flex;flex-direction:column;gap:5px;border:1px solid var(--line);font-size:9px;padding:7px 2px}.paper-option[aria-pressed=true]{background:var(--soft);border-color:var(--green)}.paper-option svg{width:22px;height:16px}.inspector-bottom{margin-top:25px;padding-top:13px;border-top:1px solid var(--line);font-size:10px;line-height:1.6;color:var(--muted)}.inspector-bottom strong{font-weight:700;color:var(--ink)}.advanced{display:none!important}[data-mode=advanced] .advanced{display:revert!important}[data-mode=advanced] .tool.advanced{display:flex!important}[data-mode=advanced] .row.advanced{display:flex!important}.mobile-only{display:none}.inspector-scrim{display:none}#sessionBanner{padding:9px 15px;background:var(--soft);color:var(--ink);font-size:12px;border-bottom:1px solid var(--line);z-index:10}.toast{position:fixed;left:50%;bottom:70px;transform:translateX(-50%);border-radius:9px;box-shadow:var(--shadow);background:var(--ink);color:var(--panel);padding:12px 18px;max-width:min(520px,90vw);font-size:13px;z-index:40;pointer-events:none;line-height:1.5}.toast.error{background:var(--error);color:var(--panel)}
+/* Dialogs are also the mobile file and export panels. */
+dialog{border:1px solid var(--line);border-radius:15px;background:var(--panel);color:var(--ink);padding:0;width:min(510px,calc(100vw - 24px));max-height:calc(100dvh - 36px);box-shadow:0 25px 100px #0004;overflow:auto}dialog::backdrop{background:var(--modal);backdrop-filter:blur(3px)}.dialog-head{display:flex;align-items:center;justify-content:space-between;padding:20px 23px 13px;gap:16px}.dialog-head h2{font-size:22px;font-family:Georgia,serif;font-weight:400;margin:0}.dialog-body{padding:3px 24px 22px}.dialog-foot{padding:14px 24px 20px;display:flex;justify-content:flex-end;align-items:center;gap:8px;border-top:1px solid var(--line);flex-wrap:wrap}.dialog-intro{font-size:13px;line-height:1.6;color:var(--muted);margin:0 0 19px}.action-list{display:grid;gap:7px}.action-list button{text-align:left;justify-content:flex-start;min-height:54px;border:1px solid var(--line);padding:10px 13px}.action-list button>svg{margin-right:5px}.action-list small{display:block;font-weight:400;font-size:11px;color:var(--muted);margin-top:4px}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:13px}.two-col>.field{margin-bottom:10px}.export-dialog{width:min(790px,calc(100vw - 24px))}.export-grid{display:grid;grid-template-columns:minmax(0,1fr) 264px;gap:26px}.export-preview-wrap{min-height:260px;border:1px solid var(--line);border-radius:9px;background:var(--bg);display:flex;align-items:center;justify-content:center;overflow:hidden;padding:12px;position:relative}.export-preview-wrap canvas{max-width:100%;max-height:320px;width:auto;height:auto;box-shadow:0 3px 18px #0002;background-image:linear-gradient(45deg,#ddd 25%,transparent 25%),linear-gradient(-45deg,#ddd 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#ddd 75%),linear-gradient(-45deg,transparent 75%,#ddd 75%);background-size:16px 16px;background-position:0 0,0 8px,8px -8px,-8px 0;background-color:#f5f5f0}.preview-caption{font-size:11px;margin-top:12px;color:var(--muted);line-height:1.7}.format-note{background:var(--soft);border-radius:7px;padding:10px;font-size:11px;line-height:1.5;margin:13px 0 0}.error-text{font-size:12px;color:var(--error);margin:10px 0;line-height:1.5}.export-options>.field{margin-bottom:14px}.export-options .check{font-size:12px}.export-ready{font-size:12px;background:var(--soft);border-radius:7px;padding:11px;margin-top:14px}.export-ready a{color:var(--ink);font-weight:700}.export-ready button{font-size:12px;margin-top:8px}.keyboard-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px 18px;font-size:12px}.keyboard-grid>div{display:flex;justify-content:space-between;align-items:center;gap:5px}.help-block{font-size:13px;line-height:1.7}.help-block h3{font-size:13px;margin:20px 0 6px}.help-block p{margin:6px 0 13px}#printArea{display:none}
+@media(min-width:861px){.workspace.inspector-hidden{grid-template-columns:70px minmax(0,1fr)}.workspace.inspector-hidden .inspector{display:none}}
+@media(max-width:1100px){.brand{min-width:194px}.brand-name{font-size:22px}.brand-sub{font-size:8px;letter-spacing:.9px}.topbar{gap:13px;padding:10px 17px}.workspace{grid-template-columns:64px minmax(0,1fr) 242px}.toolrail{padding:16px 6px}.inspector{padding:17px 15px}.mode-switch{margin:0}.mode-switch button{padding:5px 7px}.top-actions{gap:3px}.top-actions>.primary{min-width:105px}.project-name{max-width:260px}.top-actions .label-optional{display:none}}
+@media(max-width:860px){.topbar{height:72px}.brand{min-width:174px}.brand-mark{width:33px;height:39px}.brand-sub{font-size:7px}.top-actions>.mode-switch{display:none}.workspace{grid-template-columns:62px minmax(0,1fr)}.inspector{position:absolute;top:0;right:0;bottom:0;width:min(300px,85vw);display:none;box-shadow:-15px 0 55px #0002}.workspace.inspector-open .inspector{display:block}.workspace.inspector-open .inspector-scrim{display:block;position:absolute;inset:0;background:#17241e38;z-index:5}.mobile-only{display:revert}.mobile-only.row{display:flex}.boardbar{padding:5px 12px}.bottomline{padding:0 12px}.bottomline .desktop-hint{display:none}.mobile-mode{display:flex;align-items:center;justify-content:space-between;margin:0 0 18px}.mobile-mode .mode-switch{margin:0}.inspector-title{margin-bottom:10px}.inspector-title .mobile-only{margin-right:-7px}.inspector-title .badge{display:none}.sheet{box-shadow:0 3px 14px #0002}.toolrail{gap:5px}.viewbar{bottom:16px}}
+@media(max-width:540px){.topbar{height:68px;padding:8px 10px;gap:10px}.brand{min-width:auto;gap:7px}.brand-mark{width:30px;height:34px;border-radius:9px 9px 13px 13px}.brand-mark svg{width:22px;height:22px}.brand-name{font-size:18px;letter-spacing:.8px}.brand-sub{display:none}.project-name{min-width:0;flex:1}.project-name input{font-size:12px!important;max-width:130px}.save-line{font-size:9px;gap:4px}.top-actions{gap:1px;margin-left:0}.top-actions>.primary{min-width:40px;width:40px;padding:8px}.top-actions>.primary .export-label{display:none}.top-actions>#helpButton{display:none}.top-actions>#fileButton{width:36px;padding:8px}.top-actions>#fileButton span{display:none}.workspace{display:flex;flex-direction:column}.toolrail{flex-direction:row;border-right:0;border-bottom:1px solid var(--line);height:68px;min-height:68px;padding:7px 8px;gap:5px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}.toolrail .tool{width:43px;min-height:49px;height:49px;font-size:8px;gap:2px}.toolrail .tool svg{width:21px;height:21px}.toolrail .rail-separator{width:1px;height:25px;margin:0 3px}.toolrail .spacer{min-width:0;min-height:0}.toolrail .icon-btn{width:33px;padding:6px}.toolrail .desktop-only{display:none}.board{flex:1}.boardbar{min-height:42px;height:42px;padding:4px 10px}.boardbar .quiet-pill{font-size:8px}.paper-label{gap:6px}.boardbar .mono{font-size:10px}.boardbar .row{gap:3px}.boardbar #newButton{font-size:11px;padding:5px}.boardbar #newButton svg{display:none}.bottomline{height:29px;padding:0 10px;font-size:9px;gap:5px}.bottomline .session-detail{display:none}.viewbar{bottom:12px;padding:3px 5px;gap:0}.viewbar .divider{margin:0 3px}.viewbar button{min-height:34px}.inspector{top:0;width:min(310px,88vw);bottom:0}.export-grid{grid-template-columns:1fr;gap:17px}.export-preview-wrap{min-height:140px;max-height:200px}.export-preview-wrap canvas{max-height:170px}.export-dialog .dialog-body{padding:0 18px 18px}.export-options{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.export-options>.wide{grid-column:1/-1}.export-options .field{margin-bottom:10px}.dialog-head{padding:17px 18px 12px}.dialog-head h2{font-size:21px}.dialog-body{padding:0 18px 18px}.dialog-foot{padding:13px 18px 17px}.preview-caption{margin-top:6px}.keyboard-grid{grid-template-columns:1fr}.inspector-bottom{margin-top:17px}.toast{bottom:70px}.desktop-only{display:none!important}}
+@media(max-height:600px) and (min-width:541px){.topbar{height:58px}.brand-mark{height:35px;width:34px}.brand-name{font-size:20px}.brand-sub{display:none}.toolrail{gap:2px;padding-top:8px}.toolrail .tool{min-height:42px;height:42px;font-size:8px}.toolrail .tool svg{width:18px;height:18px}.toolrail .rail-separator{margin:1px}.toolrail .icon-btn{height:33px;min-height:33px}.boardbar{height:38px;min-height:38px}.inspector{padding-top:12px}.viewbar{bottom:9px}.bottomline{height:25px}}
+@media(max-width:540px){input:not([type=range]):not([type=checkbox]):not([type=color]),select,textarea{font-size:16px!important}.project-name input{font-size:16px!important}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{html,body{height:auto;overflow:visible;background:white!important;color:black!important}#app,dialog,.toast{display:none!important}#printArea{display:block!important;width:100%;text-align:center}#printArea img{display:block;max-width:100%;max-height:95vh;object-fit:contain;margin:auto;break-inside:avoid}@page{margin:12mm}}
+</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true"><defs>
+<symbol id="i-nib" viewBox="0 0 24 24"><path d="M4 20 8 7 20 3 16 16Z"/><path d="m4 20 8-8"/><circle cx="13" cy="11" r="2"/></symbol>
+<symbol id="i-pen" viewBox="0 0 24 24"><path d="m4 20 1-5L16 4a2.1 2.1 0 0 1 3 3L8 18Z"/><path d="m14 6 4 4M4 20h7"/></symbol>
+<symbol id="i-brush" viewBox="0 0 24 24"><path d="M9 14 17 3c1-1 4 1 3 2L12 16M9 14l3 2"/><path d="M11 16c2 7-8 5-8 5 4-1 1-5 5-6 1 0 2 0 3 1Z"/></symbol>
+<symbol id="i-marker" viewBox="0 0 24 24"><path d="m7 14 8-11 6 5-9 10ZM7 14l5 4-3 3H3ZM4 22h14"/></symbol>
+<symbol id="i-eraser" viewBox="0 0 24 24"><path d="m4 13 10-10 7 7-10 10H8Z"/><path d="m9 8 7 7M11 20h10"/></symbol>
+<symbol id="i-hand" viewBox="0 0 24 24"><path d="M8 12V5a1.5 1.5 0 0 1 3 0v7-9a1.5 1.5 0 0 1 3 0v9-7a1.5 1.5 0 0 1 3 0v8-4a1.5 1.5 0 0 1 3 0v8c0 3-2 5-6 5h-2c-2 0-3-1-4-3l-4-6c-1-2 1-3 2-2l2 2"/></symbol>
+<symbol id="i-line" viewBox="0 0 24 24"><path d="m4 20 16-16"/><circle cx="4" cy="20" r="1"/><circle cx="20" cy="4" r="1"/></symbol>
+<symbol id="i-rect" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="1"/></symbol>
+<symbol id="i-ellipse" viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="9" ry="7"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="m4 20 15-15M8 5h11v11"/></symbol>
+<symbol id="i-text" viewBox="0 0 24 24"><path d="M4 6V4h16v2M12 4v16M8 20h8"/></symbol>
+<symbol id="i-undo" viewBox="0 0 24 24"><path d="m8 4-5 5 5 5M4 9h10a6 6 0 0 1 0 12h-2"/></symbol>
+<symbol id="i-redo" viewBox="0 0 24 24"><path d="m16 4 5 5-5 5m4-5H10a6 6 0 0 0 0 12h2"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+<symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V4h7l2 3h9v13H3ZM3 9h18"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+<symbol id="i-fit" viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/><rect x="7" y="7" width="10" height="10" rx="1"/></symbol>
+<symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3" fill="var(--panel)"/><circle cx="16" cy="17" r="3" fill="var(--panel)"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+<symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4m0 3h.01"/></symbol>
+<symbol id="i-page" viewBox="0 0 24 24"><path d="M14 3H5v18h14V8ZM14 3v5h5M8 13h8m-8 4h6"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7"/></symbol>
+<symbol id="i-print" viewBox="0 0 24 24"><path d="M7 8V3h10v5M7 17H3V9h18v8h-4M7 14h10v7H7ZM17 11h1"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="m12 3 8 3v6c0 4-8 9-8 9s-8-5-8-9V6ZM8 12l3 3 5-6"/></symbol>
+<symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 3 7 7 3-7 3-3 7-3-7-7-3 7-3Z"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V3m-4 4 4-4 4 4M6 10H4v11h16V10h-2"/></symbol>
+</defs></svg>
+<div id="app">
+<header class="topbar">
+ <div class="brand"><div class="brand-mark"><svg class="icon"><use href="#i-nib"/></svg></div><div><div class="brand-name">INKWELL</div><div class="brand-sub">A GREEN SHOE FIELD INSTRUMENT</div></div></div>
+ <div class="project-name"><label class="sr-only" for="projectTitle">Project title</label><input id="projectTitle" value="Untitled sketch" maxlength="100" spellcheck="false" autocomplete="off"><div class="save-line" role="status" aria-live="polite"><span class="led" id="saveLed" data-state="saved"></span><span id="saveStatus">Ready · saved on this device</span></div></div>
+ <nav class="top-actions" aria-label="Project actions"><div class="mode-switch" aria-label="Workspace mode"><button data-mode="easy" aria-pressed="true">Easy</button><button data-mode="advanced" aria-pressed="false">Advanced</button></div><button id="fileButton" title="Project files"><svg class="icon"><use href="#i-folder"/></svg><span class="label-optional">File</span></button><button class="icon-btn" id="helpButton" aria-label="Help and shortcuts"><svg class="icon"><use href="#i-help"/></svg></button><button class="primary" id="exportButton" aria-label="Export image"><svg class="icon"><use href="#i-download"/></svg><span class="export-label">Export image</span></button></nav>
+</header>
+<div id="sessionBanner" role="status" hidden></div>
+<main class="workspace" id="workspace">
+ <nav class="toolrail" aria-label="Drawing tools">
+  <button class="tool" data-tool="pen" aria-pressed="true" title="Pen (P)"><svg class="icon"><use href="#i-pen"/></svg><span>Pen</span></button>
+  <button class="tool" data-tool="brush" aria-pressed="false" title="Brush (B)"><svg class="icon"><use href="#i-brush"/></svg><span>Brush</span></button>
+  <button class="tool" data-tool="highlighter" aria-pressed="false" title="Highlighter (H)"><svg class="icon"><use href="#i-marker"/></svg><span>Highlight</span></button>
+  <button class="tool" data-tool="eraser" aria-pressed="false" title="Eraser (E)"><svg class="icon"><use href="#i-eraser"/></svg><span>Eraser</span></button>
+  <div class="rail-separator advanced"></div>
+  <button class="tool advanced" data-tool="line" aria-pressed="false" title="Straight line (L); hold Shift to constrain"><svg class="icon"><use href="#i-line"/></svg><span>Line</span></button>
+  <button class="tool advanced" data-tool="arrow" aria-pressed="false" title="Arrow (A)"><svg class="icon"><use href="#i-arrow"/></svg><span>Arrow</span></button>
+  <button class="tool advanced" data-tool="rect" aria-pressed="false" title="Rectangle (R); hold Shift for a square"><svg class="icon"><use href="#i-rect"/></svg><span>Box</span></button>
+  <button class="tool advanced" data-tool="ellipse" aria-pressed="false" title="Ellipse (O); hold Shift for a circle"><svg class="icon"><use href="#i-ellipse"/></svg><span>Oval</span></button>
+  <button class="tool advanced" data-tool="text" aria-pressed="false" title="Typed annotation (T)"><svg class="icon"><use href="#i-text"/></svg><span>Text</span></button>
+  <div class="rail-separator"></div>
+  <button class="tool" data-tool="hand" aria-pressed="false" title="Pan (V); or hold Space"><svg class="icon"><use href="#i-hand"/></svg><span>Move</span></button>
+  <div class="spacer"></div>
+  <button class="icon-btn" id="undoButton" aria-label="Undo" title="Undo (Ctrl / ⌘ Z)" disabled><svg class="icon"><use href="#i-undo"/></svg></button>
+  <button class="icon-btn" id="redoButton" aria-label="Redo" title="Redo (Ctrl / ⌘ Shift Z)" disabled><svg class="icon"><use href="#i-redo"/></svg></button>
+ </nav>
+ <section class="board" aria-label="Drawing workspace">
+  <div class="boardbar"><div class="paper-label"><span class="quiet-pill" id="paperLabel">LANDSCAPE</span><span class="mono muted" id="dimensionsLabel">1600 × 1000</span></div><div class="row"><button id="newButton" title="Create a new sheet"><svg class="icon"><use href="#i-plus"/></svg>New sheet</button><button class="icon-btn" id="inspectorToggle" aria-label="Pen and paper settings" aria-controls="inspector" aria-expanded="true" title="Pen & paper settings"><svg class="icon"><use href="#i-sliders"/></svg></button></div></div>
+  <div class="stage" id="stage" tabindex="0" role="region" aria-label="Drawing canvas. Use a mouse, finger, or pen to draw. Use the Move tool or two fingers to navigate." aria-describedby="canvasDescription">
+   <div class="sheet" id="sheet"><canvas id="paperCanvas"></canvas><canvas id="inkCanvas"></canvas><canvas id="liveCanvas"></canvas><div class="empty-hint" id="emptyHint"><svg class="icon"><use href="#i-nib"/></svg><strong>Make your mark.</strong><span>Mouse, finger, or pen. Just draw.</span></div></div>
+   <div class="viewbar" aria-label="Canvas view"><button class="icon-btn" id="zoomOut" aria-label="Zoom out"><svg class="icon"><use href="#i-minus"/></svg></button><button id="zoomReset" title="Actual size (100%)">100%</button><button class="icon-btn" id="zoomIn" aria-label="Zoom in"><svg class="icon"><use href="#i-plus"/></svg></button><span class="divider"></span><button id="fitButton" title="Fit sheet (0)"><svg class="icon"><use href="#i-fit"/></svg>Fit</button></div>
+  </div>
+  <div class="bottomline"><span id="toolStatus">Pen · 4 px</span><span class="desktop-hint">Space + drag to move · scroll to zoom</span><span class="mobile-only">Two fingers to move & zoom</span><span class="session-detail"><span id="strokeCount">0 marks</span> <span aria-hidden="true"> / </span> v1.0.0</span></div>
+ </section>
+ <div class="inspector-scrim" id="inspectorScrim"></div>
+ <aside class="inspector" id="inspector" aria-label="Pen and paper settings">
+  <div class="inspector-title"><h2 id="toolHeading">The pen tray</h2><span class="badge">MAKE SOMETHING</span><button class="icon-btn mobile-only" id="closeInspector" aria-label="Close settings"><svg class="icon"><use href="#i-close"/></svg></button></div>
+  <div class="mobile-only mobile-mode"><span class="small muted">Workspace</span><div class="mode-switch"><button data-mode="easy" aria-pressed="true">Easy</button><button data-mode="advanced" aria-pressed="false">Advanced</button></div></div>
+  <div class="field"><label for="inkColor">Ink color</label><div class="color-field"><input type="color" id="inkColor" value="#243d36" aria-label="Ink color picker"><input id="inkHex" type="text" value="#243D36" maxlength="7" aria-label="Ink hex color" spellcheck="false"></div><div class="swatches" id="swatches" aria-label="Ink colors"></div></div>
+  <div class="brush-preview" aria-hidden="true"><svg viewBox="0 0 225 46"><path id="brushPreview" d="M17 30 Q40 5 71 24 T128 21 T185 21 L207 17" fill="none" stroke="#243d36" stroke-width="4" stroke-linecap="round"/></svg></div>
+  <div class="field"><div class="field-heading"><label for="sizeInput">Stroke width</label><output id="sizeOutput" for="sizeInput">4 px</output></div><input type="range" id="sizeInput" min="1" max="80" step="0.5" value="4"><div class="size-chips"><button data-size="2">Fine</button><button data-size="6">Medium</button><button data-size="16">Bold</button></div></div>
+  <div class="field"><div class="field-heading"><label for="smoothingInput">Steady hand</label><output id="smoothingOutput" for="smoothingInput">35%</output></div><input type="range" id="smoothingInput" min="0" max="85" step="5" value="35"></div>
+  <div class="advanced"><div class="field"><div class="field-heading"><label for="opacityInput">Ink opacity</label><output id="opacityOutput" for="opacityInput">100%</output></div><input type="range" id="opacityInput" min="5" max="100" step="5" value="100"></div><label class="check"><input type="checkbox" id="pressureToggle" checked>Vary brush width with pressure / speed</label><label class="check"><input type="checkbox" id="penOnlyToggle">Pen-only ink; fingers navigate</label><label class="check" id="fillField"><input type="checkbox" id="fillToggle">Fill boxes and ovals</label></div>
+  <details open><summary>Paper & guides</summary><div class="paper-options" aria-label="Paper guides"><button class="paper-option" data-pattern="blank" aria-pressed="true"><svg class="icon"><use href="#i-page"/></svg>Plain</button><button class="paper-option" data-pattern="lined" aria-pressed="false"><svg viewBox="0 0 24 16" fill="none" stroke="currentColor"><path d="M2 3h20M2 8h20M2 13h20"/></svg>Ruled</button><button class="paper-option" data-pattern="grid" aria-pressed="false"><svg viewBox="0 0 24 16" fill="none" stroke="currentColor"><path d="M0 4h24M0 12h24M4 0v16M12 0v16M20 0v16"/></svg>Grid</button><button class="paper-option" data-pattern="dots" aria-pressed="false"><svg viewBox="0 0 24 16" fill="currentColor"><circle cx="4" cy="4" r="1.3"/><circle cx="12" cy="4" r="1.3"/><circle cx="20" cy="4" r="1.3"/><circle cx="4" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="20" cy="12" r="1.3"/></svg>Dots</button></div><div class="row between" style="margin-top:14px"><label for="paperColor" style="margin:0">Paper color</label><input type="color" id="paperColor" value="#fffdf7"></div><label class="check"><input type="checkbox" id="paperTransparent">Transparent paper</label><div class="advanced field" style="margin-top:12px"><div class="field-heading"><label for="spacingInput">Guide spacing</label><output id="spacingOutput" for="spacingInput">40 px</output></div><input type="range" id="spacingInput" min="16" max="100" step="4" value="40"></div><p class="small muted" style="font-size:10px;margin:10px 0 0">Guides are optional when exporting.</p></details>
+  <details><summary>Workspace appearance</summary><label for="themeSelect">Interface theme</label><select id="themeSelect"><option value="light">Warm light</option><option value="dark">After hours</option><option value="contrast">High contrast</option></select><p class="small muted" style="margin:8px 0 0;font-size:11px">Your paper and exported ink stay the same.</p></details>
+  <div class="inspector-bottom"><div class="row"><svg class="icon" style="width:14px;height:14px"><use href="#i-shield"/></svg><strong>Yours, from first mark to last.</strong></div>No accounts. No uploads. No telemetry.<br><span id="offlineStatus">Local-first workspace</span> · v1.0.0</div>
+ </aside>
+</main>
+</div>
+<p class="sr-only" id="canvasDescription">This is a freehand drawing app, not handwriting recognition. Export saves the marks as images. The File menu also saves editable JSON projects. Blank paper starts at 1600 by 1000 pixels. Keyboard-accessible controls are available, but freehand drawing requires pointing input.</p>
+<dialog id="fileDialog" aria-labelledby="fileTitle"><div class="dialog-head"><h2 id="fileTitle">Your sketchbook</h2><button class="icon-btn" data-close aria-label="Close"><svg class="icon"><use href="#i-close"/></svg></button></div><div class="dialog-body"><p class="dialog-intro">Keep a project to come back to. Everything stays on your device.</p><div class="action-list"><button id="saveProject"><svg class="icon"><use href="#i-download"/></svg><span>Save editable project<small>JSON · paper, colors, and every mark</small></span></button><button id="openProject"><svg class="icon"><use href="#i-folder"/></svg><span>Open a project<small>Restore an INKWELL JSON file</small></span></button><button id="fileNew"><svg class="icon"><use href="#i-page"/></svg><span>New sheet<small>Choose a size and start something new</small></span></button><button id="sampleButton"><svg class="icon"><use href="#i-spark"/></svg><span>Try a sample<small>A few marks to play with · undoable</small></span></button><button id="clearButton"><svg class="icon"><use href="#i-eraser"/></svg><span>Clear the ink<small>Keep your paper settings · undoable</small></span></button></div><div class="rule"></div><div class="row between"><button id="fileHelp"><svg class="icon"><use href="#i-help"/></svg>How to use</button><button class="danger" id="freshButton">Fresh start</button></div></div></dialog>
+<dialog id="newDialog" aria-labelledby="newTitle"><div class="dialog-head"><h2 id="newTitle">A fresh sheet</h2><button class="icon-btn" data-close aria-label="Close"><svg class="icon"><use href="#i-close"/></svg></button></div><form id="newForm"><div class="dialog-body"><p class="dialog-intro">A new sheet replaces this workspace. Save a JSON copy first to keep a separate project. You can also undo.</p><div class="field"><label for="newName">Project title</label><input id="newName" maxlength="100" value="Untitled sketch" required></div><div class="field"><label for="presetSelect">Paper size</label><select id="presetSelect"><option value="1600,1000">Landscape · 1600 × 1000</option><option value="1000,1600">Portrait · 1000 × 1600</option><option value="1200,1200">Square · 1200 × 1200</option><option value="1600,500">Signature strip · 1600 × 500</option><option value="1123,794">A4 ratio · landscape · 1123 × 794</option><option value="794,1123">A4 ratio · portrait · 794 × 1123</option><option value="custom">Custom pixels</option></select></div><div class="two-col"><div><label for="newWidth">Width (px)</label><input type="number" id="newWidth" value="1600" min="100" max="4096" step="1" required></div><div><label for="newHeight">Height (px)</label><input type="number" id="newHeight" value="1000" min="100" max="4096" step="1" required></div></div><label class="check"><input type="checkbox" id="newTransparent">Start with transparent paper</label><p class="error-text" id="newError" hidden></p></div><div class="dialog-foot"><button type="button" class="secondary" id="backupNew">Save current JSON</button><button class="primary" type="submit">Create sheet</button></div></form></dialog>
+<dialog class="export-dialog" id="exportDialog" aria-labelledby="exportTitle"><div class="dialog-head"><h2 id="exportTitle">Take your marks with you.</h2><button class="icon-btn" data-close aria-label="Close"><svg class="icon"><use href="#i-close"/></svg></button></div><div class="dialog-body"><div class="export-grid"><div><div class="export-preview-wrap"><canvas id="exportPreview" aria-label="Export preview"></canvas></div><div class="preview-caption"><strong id="exportDimensions" class="mono">1600 × 1000 pixels</strong><br><span id="exportSummary">The full sheet, without guides.</span></div><div class="export-ready" id="exportReady" hidden><span>Image ready. </span><a id="downloadAgain" download>Save the image again</a><button class="secondary" id="shareImage" hidden><svg class="icon"><use href="#i-share"/></svg>Share image</button></div></div><div class="export-options"><div class="field wide"><label for="exportFormat">Image format</label><select id="exportFormat"><option value="png">PNG · crisp ink + transparency</option><option value="jpeg">JPEG · compact, solid background</option><option value="webp">WebP · small, modern image</option><option value="svg">SVG · scalable vector strokes</option><option value="bmp">BMP · uncompressed bitmap</option></select></div><div class="field"><label for="exportScale">Output scale</label><select id="exportScale"><option value="1">1× original</option><option value="2">2× resolution</option><option value="3">3× resolution</option><option value="4">4× resolution</option></select></div><div class="field"><label for="exportCrop">Export area</label><select id="exportCrop"><option value="sheet">Whole sheet</option><option value="ink">Crop to ink</option></select></div><div class="field" id="paddingField" hidden><label for="exportPadding">Crop padding (px)</label><input id="exportPadding" type="number" min="0" max="200" value="24"></div><div class="field" id="qualityField" hidden><div class="field-heading"><label for="exportQuality">Quality</label><output id="qualityOutput">92%</output></div><input id="exportQuality" type="range" min="30" max="100" value="92"></div><div class="wide"><label class="check"><input id="exportTransparent" type="checkbox">Transparent background</label><label class="check"><input id="exportGuides" type="checkbox">Include paper guides</label></div><p class="format-note wide" id="formatNote">Lossless image. A good choice for handwriting, sketches, and transparent signatures.</p></div></div><p class="error-text" id="exportError" role="alert" hidden></p></div><div class="dialog-foot"><button class="secondary" id="printButton"><svg class="icon"><use href="#i-print"/></svg>Print / PDF</button><button class="primary" id="downloadImage"><svg class="icon"><use href="#i-download"/></svg>Download image</button></div></dialog>
+<dialog id="textDialog" aria-labelledby="textTitle"><div class="dialog-head"><h2 id="textTitle">Add a note</h2><button class="icon-btn" data-close aria-label="Close"><svg class="icon"><use href="#i-close"/></svg></button></div><form id="textForm"><div class="dialog-body"><label for="noteText">Text</label><textarea id="noteText" maxlength="2000" rows="4" required placeholder="A label, a caption, a little context…"></textarea><div class="two-col" style="margin-top:16px"><div><label for="textSize">Text size (px)</label><input type="number" id="textSize" min="8" max="240" value="36" required></div><div><label for="textFont">Typeface</label><select id="textFont"><option value="sans">Sans serif</option><option value="serif">Serif</option><option value="mono">Monospace</option></select></div></div><p class="small muted">Placed where you tapped, using the current ink color. Handwriting does not need this tool—just use the pen.</p></div><div class="dialog-foot"><button type="submit" class="primary">Place text</button></div></form></dialog>
+<dialog id="confirmDialog" aria-labelledby="confirmTitle"><div class="dialog-head"><h2 id="confirmTitle">Start again?</h2><button class="icon-btn" data-close aria-label="Close"><svg class="icon"><use href="#i-close"/></svg></button></div><div class="dialog-body"><p id="confirmMessage" class="dialog-intro"></p></div><div class="dialog-foot"><button id="confirmBackup" class="secondary">Save current JSON</button><button data-close>Cancel</button><button id="confirmAccept" class="primary">Continue</button></div></dialog>
+<dialog id="helpDialog" aria-labelledby="helpTitle"><div class="dialog-head"><h2 id="helpTitle">A little ink. A lot of possibility.</h2><button class="icon-btn" data-close aria-label="Close"><svg class="icon"><use href="#i-close"/></svg></button></div><div class="dialog-body help-block"><p>Write or draw directly on the paper with your <strong>mouse, finger, or stylus</strong>. Pick a pen, choose a color, and make your mark.</p><h3>Find your flow</h3><p><strong>Pen</strong> has a consistent line. <strong>Brush</strong> changes width with stylus pressure or drawing speed. <strong>Highlight</strong> lays down translucent ink. <strong>Eraser</strong> removes ink, not the paper. Increase <strong>Steady hand</strong> to smooth small wobbles.</p><h3>Make room</h3><p>Use <strong>Move</strong> or hold Space and drag. Two fingers pan and pinch the sheet. The first, unfinished stroke is canceled when a two-finger gesture starts. Scroll to zoom; <strong>Fit</strong> brings the whole page back.</p><h3>Take it with you</h3><p><strong>Export image</strong> saves PNG, JPEG, WebP (when your browser can encode it), SVG, or BMP. Transparent PNG is useful for signatures and overlays. Crop to ink removes empty margins. Guides are off in exports unless you include them.</p><p><strong>File → Save editable project</strong> keeps the vector marks and paper settings in JSON. Image files are finished outputs, not editable project backups. This app does not recognize handwriting or turn it into typed text.</p><h3>Your work, your device</h3><p>Autosave uses this browser's storage. It is not cloud backup: clearing site data, private browsing, or moving to another browser can remove it. Export JSON for a durable copy. No telemetry, accounts, remote fonts, or drawing uploads.</p><h3>Keyboard shortcuts</h3><div class="keyboard-grid"><div>Pen / Brush<span class="kbd">P / B</span></div><div>Highlight / Eraser<span class="kbd">H / E</span></div><div>Move<span class="kbd">V / Space</span></div><div>Fit paper<span class="kbd">0</span></div><div>Undo<span class="kbd">Ctrl/⌘ Z</span></div><div>Redo<span class="kbd">Ctrl/⌘ Shift Z</span></div><div>Save project<span class="kbd">Ctrl/⌘ S</span></div><div>Export image<span class="kbd">Ctrl/⌘ E</span></div><div>Change width<span class="kbd">[ / ]</span></div><div>Cancel mark<span class="kbd">Esc</span></div></div><h3>Advanced mode</h3><p>Add lines, arrows, boxes, ovals, and typed labels. Hold Shift while drawing shapes to constrain them. Pen-only ink makes fingers navigate instead of draw; it is not hardware-level palm rejection. Theme changes affect the interface, not the exported artwork.</p><p class="small muted">INKWELL v1.0.0 · Green Shoe Garage<br>Freehand drawing requires pointing input; the surrounding controls support keyboard navigation.</p></div></dialog>
+<input id="projectFile" type="file" accept=".json,application/json" hidden>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<div id="printArea"><img id="printImage" alt="Drawing prepared for printing"></div>
+<noscript><p style="padding:20px">INKWELL needs JavaScript to draw and export images. All processing runs on this device.</p></noscript>
+<script>
+'use strict';
+(() => {
+const VERSION = '1.0.0', APP = 'INKWELL', SCHEMA = 1;
+const MAX_PIXELS = 12582912, EXPORT_PIXELS = 16777216, MAX_POINTS = 400000, MAX_MARKS = 5000;
+const $ = id => document.getElementById(id);
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const finite = v => typeof v === 'number' && Number.isFinite(v);
+const round = n => Math.round(n * 100) / 100;
+const uid = () => globalThis.crypto?.randomUUID?.() || `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+const clone = value => JSON.parse(JSON.stringify(value));
+const xml = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
+const isHex = s => typeof s === 'string' && /^#[0-9a-f]{6}$/i.test(s);
+const prettyTool = t => ({pen:'Pen',brush:'Brush',highlighter:'Highlighter',eraser:'Eraser',hand:'Move',line:'Line',arrow:'Arrow',rect:'Box',ellipse:'Oval',text:'Text'}[t] || 'Pen');
+const makeCanvas = (w,h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+const ctx2d = c => { const ctx = c.getContext('2d'); if (!ctx) throw new Error('A 2D drawing canvas is unavailable in this browser.'); return ctx; };
+const freshProject = (title='Untitled sketch', w=1600, h=1000, transparent=false) => ({app:APP,schema:SCHEMA,version:VERSION,id:uid(),title,created:new Date().toISOString(),paper:{width:w,height:h,color:'#fffdf7',pattern:'blank',spacing:40,transparent},marks:[]});
+const defaults = {theme:'light',mode:'easy',color:'#243d36',smoothing:35,pressure:true,penOnly:false,fill:false,widths:{pen:4,brush:14,highlighter:30,eraser:28,line:4,arrow:4,rect:4,ellipse:4,text:4},opacities:{pen:100,brush:100,highlighter:30,eraser:100,line:100,arrow:100,rect:100,ellipse:100,text:100}};
+let prefs = clone(defaults);
+try { const raw = JSON.parse(localStorage.getItem('inkwell.preferences') || 'null'); if (raw) {
+ if(['light','dark','contrast'].includes(raw.theme)) prefs.theme = raw.theme;
+ if(['easy','advanced'].includes(raw.mode)) prefs.mode = raw.mode;
+ if(isHex(raw.color)) prefs.color = raw.color;
+ if(finite(raw.smoothing)) prefs.smoothing = clamp(raw.smoothing,0,85);
+ for (const k of ['pressure','penOnly','fill']) if(typeof raw[k]==='boolean') prefs[k]=raw[k];
+ for(const k of Object.keys(prefs.widths)) { if(finite(raw.widths?.[k])) prefs.widths[k]=clamp(raw.widths[k],1,80); if(finite(raw.opacities?.[k])) prefs.opacities[k]=clamp(raw.opacities[k],5,100); }
+}} catch (_) { /* Storage is optional; the drawing tools still work. */ }
+const savePrefs = () => { try { localStorage.setItem('inkwell.preferences', JSON.stringify(prefs)); } catch (_) {} };
+const newDefaultProject = () => window.innerWidth <= 540 ? freshProject('Untitled sketch',1000,1600) : freshProject();
+let project = newDefaultProject(), history = [project], historyIndex = 0, tool = 'pen', initialized = false;
+let revision = 0, dirty = false, saveTimer = 0, saving = false, saveAgain = false, db = null, storageBackend = 'memory';
+let active = null, gesture = null, panning = null, spaceHeld = false, ignoreUntilUp = false;
+let drawFrame = 0, toastTimer = 0, confirmAction = null, textAnchor = {x:100,y:100};
+let cacheBoundsProject = null, cacheBounds = null, lastExportURL = null, lastExportFile = null;
+const pointers = new Map(), geometryCache = new WeakMap();
+const view = {scale:1,tx:0,ty:0,fitted:true};
+const stage=$('stage'), sheet=$('sheet'), inkCanvas=$('inkCanvas'), paperCanvas=$('paperCanvas'), liveCanvas=$('liveCanvas');
+const inkCtx=ctx2d(inkCanvas), paperCtx=ctx2d(paperCanvas), liveCtx=ctx2d(liveCanvas);
+const channel = typeof BroadcastChannel === 'function' ? new BroadcastChannel('inkwell-workspace') : null;
+const tabId=uid();
+function showToast(message, error=false) { $('toast').textContent=message; $('toast').classList.toggle('error',error); $('toast').hidden=false; clearTimeout(toastTimer); toastTimer=setTimeout(()=>$('toast').hidden=true,error?6500:3500); }
+function setStatus(state, text) { $('saveLed').dataset.state=state; $('saveStatus').textContent=text; }
+function openDialog(id) { stopMark(true); closeInspector(); const d=$(id); if(!d.open) d.showModal(); }
+function closeDialog(id) { $(id).close(); }
+function ask(title, message, action, label='Continue', backup=true) { $('confirmTitle').textContent=title; $('confirmMessage').textContent=message; $('confirmAccept').textContent=label; $('confirmBackup').hidden=!backup; confirmAction=action; openDialog('confirmDialog'); }
+function paperName(p) { if(p.width/p.height>=2.8) return 'SIGNATURE'; return p.width===p.height?'SQUARE':p.width>p.height?'LANDSCAPE':'PORTRAIT'; }
+function setProject(next,{record=true,fit=false,save=true}={}) {
+ stopMark(true); project=next; cacheBoundsProject=null;
+ if(record){ history=history.slice(0,historyIndex+1);history.push(project);if(history.length>101)history.shift();historyIndex=history.length-1; }
+ renderAll(); syncPaper(); syncHistory(); if(fit)fitView();
+ if(save) markDirty();
+}
+function syncHistory() { $('undoButton').disabled=historyIndex===0; $('redoButton').disabled=historyIndex===history.length-1; $('strokeCount').textContent=`${project.marks.length} ${project.marks.length===1?'mark':'marks'}`; }
+function undo() { if(historyIndex===0)return; historyIndex--;const next=history[historyIndex],fit=next.paper.width!==project.paper.width||next.paper.height!==project.paper.height;setProject(next,{record:false,fit});showToast('Undone.'); }
+function redo() { if(historyIndex>=history.length-1)return;historyIndex++;const next=history[historyIndex],fit=next.paper.width!==project.paper.width||next.paper.height!==project.paper.height;setProject(next,{record:false,fit});showToast('Redone.'); }
+function commitMark(mark) {
+ if(project.marks.length>=MAX_MARKS){showToast('This sheet has 5,000 marks. Save the project and start a new sheet.',true);return;}
+ const total=project.marks.reduce((n,m)=>n+(m.points?.length||0),0)+(mark.points?.length||0);
+ if(total>MAX_POINTS){showToast('This sheet has reached its point limit. Save a JSON copy and start a new sheet.',true);return;}
+ project={...project,marks:[...project.marks,mark]};
+ history=history.slice(0,historyIndex+1);history.push(project);if(history.length>101)history.shift();historyIndex=history.length-1;
+ cacheBoundsProject=null;renderMark(inkCtx,mark);syncHistory();$('emptyHint').hidden=true;markDirty();
+}
+function updatePaper(patch) { setProject({...project,paper:{...project.paper,...patch}}); }
+// Strict allowlist validation: an import never executes content or mutates the
+// current workspace until the entire file has passed all limits and checks.
+function validateProject(raw) {
+ const fail = message => { throw new Error(message); };
+ if(!raw || typeof raw!=='object' || raw.app!==APP) fail('This is not an INKWELL project. Choose a JSON file saved by this app.');
+ if(raw.schema!==SCHEMA) fail(`Unsupported project schema ${String(raw.schema).slice(0,20)}. This version accepts schema ${SCHEMA}; your existing drawing was not changed.`);
+ if(typeof raw.title!=='string'||raw.title.length>100) fail('The project title must be 100 characters or fewer.');
+ const p=raw.paper;
+ if(!p || !Number.isInteger(p.width)||!Number.isInteger(p.height)||p.width<100||p.height<100||p.width>4096||p.height>4096||p.width*p.height>MAX_PIXELS) fail('Paper dimensions must be 100–4096 pixels on each side, with at most 12 megapixels.');
+ if(!isHex(p.color)||!['blank','lined','grid','dots'].includes(p.pattern)||!finite(p.spacing)||p.spacing<8||p.spacing>200||typeof p.transparent!=='boolean')fail('Invalid paper settings.');
+ if(!Array.isArray(raw.marks)||raw.marks.length>MAX_MARKS)fail('The project must contain an array of no more than 5,000 marks.');
+ let total=0;
+ const marks=raw.marks.map((m,i)=>{
+  if(!m||typeof m!=='object')fail(`Mark ${i+1} is invalid.`);
+  if(!isHex(m.color)||!finite(m.opacity)||m.opacity<.01||m.opacity>1)fail(`Mark ${i+1} has invalid ink settings.`);
+  const out={id:uid(),type:m.type,color:m.color,opacity:m.opacity};
+  const coord=v=>finite(v)&&Math.abs(v)<=32768;
+  if(m.type==='stroke'){
+   if(!['pen','brush','highlighter','eraser'].includes(m.tool)||!finite(m.width)||m.width<.5||m.width>240||!Array.isArray(m.points)||m.points.length<1||m.points.length>20000)fail(`Stroke ${i+1} is invalid.`);
+   total+=m.points.length;if(total>MAX_POINTS)fail('This project exceeds the 400,000-point safety limit.');
+   out.tool=m.tool;out.width=m.width;out.points=m.points.map(pt=>{if(!Array.isArray(pt)||pt.length!==3||!coord(pt[0])||!coord(pt[1])||!finite(pt[2])||pt[2]<0||pt[2]>1)fail(`Stroke ${i+1} has an invalid point.`);return [round(pt[0]),round(pt[1]),round(pt[2])];});
+  }else if(['line','arrow','rect','ellipse'].includes(m.type)){
+   if(![m.x1,m.x2,m.y1,m.y2].every(coord)||!finite(m.width)||m.width<.5||m.width>240||typeof m.fill!=='boolean')fail(`Shape ${i+1} is invalid.`);
+   Object.assign(out,{x1:m.x1,y1:m.y1,x2:m.x2,y2:m.y2,width:m.width,fill:m.fill});
+  }else if(m.type==='text'){
+   if(!coord(m.x)||!coord(m.y)||typeof m.text!=='string'||!m.text.trim()||m.text.length>2000||!finite(m.fontSize)||m.fontSize<8||m.fontSize>240||!['sans','serif','mono'].includes(m.fontFamily))fail(`Text mark ${i+1} is invalid.`);
+   Object.assign(out,{x:m.x,y:m.y,text:m.text,fontSize:m.fontSize,fontFamily:m.fontFamily});
+  }else fail(`Unknown mark type in mark ${i+1}.`);
+  return out;
+ });
+ return {app:APP,schema:SCHEMA,version:VERSION,id:uid(),title:raw.title||'Untitled sketch',created:typeof raw.created==='string'?raw.created.slice(0,40):new Date().toISOString(),paper:{width:p.width,height:p.height,color:p.color,pattern:p.pattern,spacing:p.spacing,transparent:p.transparent},marks};
+}
+// The same geometry feeds Canvas and SVG. Brush outlines are vector paths,
+// so pressure variation is preserved in image and editable-project exports.
+function centerPath(points) {
+ const p=points;let d=`M ${round(p[0][0])} ${round(p[0][1])}`;
+ if(p.length===1)return d;
+ for(let i=1;i<p.length-1;i++){const mid=[(p[i][0]+p[i+1][0])/2,(p[i][1]+p[i+1][1])/2];d+=` Q ${round(p[i][0])} ${round(p[i][1])} ${round(mid[0])} ${round(mid[1])}`;}
+ return d+` L ${round(p[p.length-1][0])} ${round(p[p.length-1][1])}`;
+}
+function circlePath(x,y,r) {return `M ${round(x-r)} ${round(y)} a ${round(r)} ${round(r)} 0 1 0 ${round(2*r)} 0 a ${round(r)} ${round(r)} 0 1 0 ${round(-2*r)} 0 Z`;}
+function smoothSamples(p) {
+ if(p.length<3)return p;
+ const out=[p[0]];let start=p[0];
+ for(let i=1;i<p.length-1;i++){
+  const c=p[i],end=[(c[0]+p[i+1][0])/2,(c[1]+p[i+1][1])/2,(c[2]+p[i+1][2])/2];
+  const count=clamp(Math.ceil((Math.hypot(c[0]-start[0],c[1]-start[1])+Math.hypot(end[0]-c[0],end[1]-c[1]))/3),1,24);
+  for(let j=1;j<=count;j++){const t=j/count,u=1-t;out.push([u*u*start[0]+2*u*t*c[0]+t*t*end[0],u*u*start[1]+2*u*t*c[1]+t*t*end[1],u*u*start[2]+2*u*t*c[2]+t*t*end[2]]);}
+  start=end;
+ }
+ out.push(p[p.length-1]);return out;
+}
+function brushPath(mark) {
+ const s=smoothSamples(mark.points),p=[];
+ for(const pt of s){if(!p.length||Math.hypot(pt[0]-p[p.length-1][0],pt[1]-p[p.length-1][1])>.08)p.push(pt);}
+ if(p.length<2){const v=p[0]||mark.points[0];return circlePath(v[0],v[1],mark.width*(.25+.75*v[2])/2);}
+ const left=[],right=[];
+ for(let i=0;i<p.length;i++){
+  const a=p[Math.max(0,i-1)],b=p[Math.min(p.length-1,i+1)];let dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy);if(len<.0001){dx=1;dy=0;len=1;}
+  const r=mark.width*(.25+.75*p[i][2])/2,nx=-dy/len*r,ny=dx/len*r;
+  left.push([p[i][0]+nx,p[i][1]+ny]);right.push([p[i][0]-nx,p[i][1]-ny]);
+ }
+ const xy=p=>`${round(p[0])} ${round(p[1])}`,endR=round(mark.width*(.25+.75*p[p.length-1][2])/2),startR=round(mark.width*(.25+.75*p[0][2])/2);
+ return `M ${xy(left[0])} `+left.slice(1).map(v=>`L ${xy(v)}`).join(' ')+` A ${endR} ${endR} 0 0 0 ${xy(right[right.length-1])} `+right.slice(0,-1).reverse().map(v=>`L ${xy(v)}`).join(' ')+` A ${startR} ${startR} 0 0 0 ${xy(left[0])} Z`;
+}
+function geometry(mark,cache=true) {
+ if(cache&&geometryCache.has(mark))return geometryCache.get(mark);
+ let d='',fill=false;
+ if(mark.type==='stroke'){
+  if(mark.tool==='brush'){d=brushPath(mark);fill=true;}
+  else if(mark.points.length===1){const p=mark.points[0];d=circlePath(p[0],p[1],mark.width/2);fill=true;}
+  else d=centerPath(mark.points);
+ }else if(mark.type==='line'||mark.type==='arrow'){
+  d=`M ${round(mark.x1)} ${round(mark.y1)} L ${round(mark.x2)} ${round(mark.y2)}`;
+  if(mark.type==='arrow'){
+   const angle=Math.atan2(mark.y2-mark.y1,mark.x2-mark.x1),len=Math.min(Math.hypot(mark.x2-mark.x1,mark.y2-mark.y1)*.45,Math.max(16,mark.width*4));
+   d+=` M ${round(mark.x2-len*Math.cos(angle-.5))} ${round(mark.y2-len*Math.sin(angle-.5))} L ${round(mark.x2)} ${round(mark.y2)} L ${round(mark.x2-len*Math.cos(angle+.5))} ${round(mark.y2-len*Math.sin(angle+.5))}`;
+  }
+ }else if(mark.type==='rect'){
+  const x=Math.min(mark.x1,mark.x2),y=Math.min(mark.y1,mark.y2),w=Math.abs(mark.x2-mark.x1),h=Math.abs(mark.y2-mark.y1);d=`M ${round(x)} ${round(y)} h ${round(w)} v ${round(h)} h ${round(-w)} Z`;fill=mark.fill;
+ }else if(mark.type==='ellipse'){
+  const rx=Math.max(.01,Math.abs(mark.x2-mark.x1)/2),ry=Math.max(.01,Math.abs(mark.y2-mark.y1)/2),cx=(mark.x1+mark.x2)/2,cy=(mark.y1+mark.y2)/2;
+  d=`M ${round(cx-rx)} ${round(cy)} a ${round(rx)} ${round(ry)} 0 1 0 ${round(2*rx)} 0 a ${round(rx)} ${round(ry)} 0 1 0 ${round(-2*rx)} 0 Z`;fill=mark.fill;
+ }
+ const g={d,fill,path:mark.type==='text'?null:new Path2D(d)};if(cache)geometryCache.set(mark,g);return g;
+}
+const fontName = f => ({sans:'Arial, sans-serif',serif:'Georgia, serif',mono:'monospace'}[f]||'Arial, sans-serif');
+function renderMark(ctx,mark,cache=true) {
+ ctx.save();ctx.globalAlpha=mark.opacity;ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle=mark.color;ctx.fillStyle=mark.color;ctx.lineWidth=mark.width||1;
+ if(mark.type==='stroke'&&mark.tool==='eraser'){ctx.globalCompositeOperation='destination-out';ctx.globalAlpha=1;}
+ if(mark.type==='text'){
+  ctx.font=`${mark.fontSize}px ${fontName(mark.fontFamily)}`;ctx.textBaseline='top';mark.text.split('\n').forEach((line,i)=>ctx.fillText(line,mark.x,mark.y+i*mark.fontSize*1.25));
+ }else{const g=geometry(mark,cache);if(g.fill)ctx.fill(g.path);else ctx.stroke(g.path);}
+ ctx.restore();
+}
+function drawGuides(ctx,p) {
+ if(p.pattern==='blank')return;
+ ctx.save();ctx.strokeStyle='#859584';ctx.fillStyle='#859584';ctx.globalAlpha=.28;ctx.lineWidth=1;
+ const sp=p.spacing;
+ if(p.pattern==='dots'){
+  ctx.beginPath();for(let y=sp;y<p.height;y+=sp)for(let x=sp;x<p.width;x+=sp){ctx.moveTo(x+1.5,y);ctx.arc(x,y,1.5,0,Math.PI*2);}ctx.fill();
+ }else{
+  ctx.beginPath();for(let y=sp;y<p.height;y+=sp){ctx.moveTo(0,y+.5);ctx.lineTo(p.width,y+.5);}
+  if(p.pattern==='grid')for(let x=sp;x<p.width;x+=sp){ctx.moveTo(x+.5,0);ctx.lineTo(x+.5,p.height);}ctx.stroke();
+ }
+ ctx.restore();
+}
+function renderAll() {
+ const p=project.paper;
+ sheet.style.width=`${p.width}px`;sheet.style.height=`${p.height}px`;
+ for(const c of [paperCanvas,inkCanvas,liveCanvas]){if(c.width!==p.width)c.width=p.width;if(c.height!==p.height)c.height=p.height;}
+ paperCtx.clearRect(0,0,p.width,p.height);
+ if(!p.transparent){paperCtx.fillStyle=p.color;paperCtx.fillRect(0,0,p.width,p.height);}
+ drawGuides(paperCtx,p);
+ sheet.classList.toggle('transparent',p.transparent);sheet.style.backgroundColor=p.transparent?'':p.color;
+ inkCtx.clearRect(0,0,p.width,p.height);for(const mark of project.marks)renderMark(inkCtx,mark);
+ clearPreview();$('emptyHint').hidden=project.marks.length>0;
+ // Hint size remains readable on portrait sheets without becoming artwork.
+ $('emptyHint').style.fontSize='';
+}
+function syncPaper() {
+ $('projectTitle').value=project.title;$('paperLabel').textContent=paperName(project.paper);$('dimensionsLabel').textContent=`${project.paper.width} × ${project.paper.height}`;
+ $('paperColor').value=project.paper.color;$('paperTransparent').checked=project.paper.transparent;$('spacingInput').value=project.paper.spacing;$('spacingOutput').textContent=`${project.paper.spacing} px`;
+ document.querySelectorAll('[data-pattern]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.pattern===project.paper.pattern)));
+}
+function clearPreview() {liveCtx.clearRect(0,0,liveCanvas.width,liveCanvas.height);inkCanvas.style.visibility='';}
+function previewMark() {
+ drawFrame=0;clearPreview();if(!active)return;
+ if(active.mark.type==='stroke'&&active.mark.tool==='eraser'){liveCtx.drawImage(inkCanvas,0,0);inkCanvas.style.visibility='hidden';}
+ renderMark(liveCtx,active.mark,false);$('emptyHint').hidden=true;
+}
+function schedulePreview() {if(!drawFrame)drawFrame=requestAnimationFrame(previewMark);}
+function applyView() {sheet.style.transform=`translate(${view.tx}px, ${view.ty}px) scale(${view.scale})`;const hint=$('emptyHint');hint.querySelector('strong').style.fontSize=`${Math.min(90,26/view.scale)}px`;hint.querySelector('span').style.fontSize=`${Math.min(42,12/view.scale)}px`;hint.querySelector('svg').style.width=hint.querySelector('svg').style.height=`${Math.min(140,42/view.scale)}px`;hint.style.gap=`${Math.min(40,12/view.scale)}px`;$('zoomReset').textContent=`${Math.round(view.scale*100)}%`;}
+function fitView() {
+ const r=stage.getBoundingClientRect(),pad=r.width<550?20:40,usableH=Math.max(80,r.height-70);
+ view.scale=clamp(Math.min((r.width-pad*2)/project.paper.width,(usableH-pad)/project.paper.height),.04,8);
+ view.tx=(r.width-project.paper.width*view.scale)/2;view.ty=(usableH-project.paper.height*view.scale)/2+8;view.fitted=true;applyView();
+}
+function localPoint(clientX,clientY) {const r=stage.getBoundingClientRect();return {x:(clientX-r.left-view.tx)/view.scale,y:(clientY-r.top-view.ty)/view.scale};}
+function zoomAt(factor,clientX=null,clientY=null) {
+ const r=stage.getBoundingClientRect(),x=clientX===null?r.width/2:clientX-r.left,y=clientY===null?r.height/2:clientY-r.top;
+ const wx=(x-view.tx)/view.scale,wy=(y-view.ty)/view.scale;view.scale=clamp(view.scale*factor,.04,8);view.tx=x-wx*view.scale;view.ty=y-wy*view.scale;view.fitted=false;applyView();
+}
+// Unified pointer handling: pointer capture keeps strokes continuous outside the
+// sheet; a second touch cancels the unfinished mark and starts a viewport gesture.
+function startGesture() {
+ const pts=[...pointers.values()].filter(p=>p.type==='touch');if(pts.length<2)return;
+ stopMark(true);panning=null;ignoreUntilUp=true;
+ const a=pts[0],b=pts[1],cx=(a.x+b.x)/2,cy=(a.y+b.y)/2;
+ gesture={distance:Math.max(1,Math.hypot(a.x-b.x,a.y-b.y)),scale:view.scale,anchor:localPoint(cx,cy)};
+}
+function updateGesture() {
+ if(!gesture)return;
+ const pts=[...pointers.values()].filter(p=>p.type==='touch');if(pts.length<2)return;
+ const a=pts[0],b=pts[1],r=stage.getBoundingClientRect();view.scale=clamp(gesture.scale*Math.hypot(a.x-b.x,a.y-b.y)/gesture.distance,.04,8);
+ view.tx=(a.x+b.x)/2-r.left-gesture.anchor.x*view.scale;view.ty=(a.y+b.y)/2-r.top-gesture.anchor.y*view.scale;view.fitted=false;applyView();
+}
+function pointPressure(e,speed=0) {
+ if(!prefs.pressure)return 1;
+ if(e.pointerType==='pen')return clamp(e.pressure>0?e.pressure:(active?.lastPressure||.5),.08,1);
+ return clamp(.96-speed*.22,.22,1);
+}
+function beginMark(e) {
+ if(!initialized||e.target.closest('button'))return;
+ if(e.pointerType==='mouse'&&e.button!==0&&e.button!==1)return;
+ e.preventDefault();stage.focus({preventScroll:true});
+ try{stage.setPointerCapture(e.pointerId);}catch(_){}
+ pointers.set(e.pointerId,{x:e.clientX,y:e.clientY,type:e.pointerType});
+ // Ignore touch contacts while a physical pen stroke is in progress.
+ if(active?.pointerType==='pen'&&e.pointerType==='touch')return;
+ if(e.pointerType==='touch'&&[...pointers.values()].filter(p=>p.type==='touch').length>=2){startGesture();return;}
+ if(active||ignoreUntilUp)return;
+ const pt=localPoint(e.clientX,e.clientY),outside=pt.x<0||pt.y<0||pt.x>project.paper.width||pt.y>project.paper.height;
+ if(tool==='hand'||spaceHeld||e.button===1||outside||(prefs.penOnly&&e.pointerType==='touch')){
+  panning={id:e.pointerId,x:e.clientX,y:e.clientY,tx:view.tx,ty:view.ty};stage.classList.add('panning');return;
+ }
+ if(tool==='text'){textAnchor={x:round(pt.x),y:round(pt.y)};pointers.delete(e.pointerId);$('noteText').value='';openDialog('textDialog');setTimeout(()=>$('noteText').focus(),20);return;}
+ const effective=e.button===5||e.buttons===32?'eraser':tool;
+ const common={id:uid(),color:prefs.color,opacity:effective==='eraser'?1:(prefs.opacities[effective]||100)/100,width:prefs.widths[effective]||4};
+ const isStroke=['pen','brush','highlighter','eraser'].includes(effective),pressure=pointPressure(e);
+ const mark=isStroke?{...common,type:'stroke',tool:effective,points:[[round(pt.x),round(pt.y),round(pressure)]]}:{...common,type:effective,x1:pt.x,y1:pt.y,x2:pt.x,y2:pt.y,fill:prefs.fill};
+ active={id:e.pointerId,pointerType:e.pointerType,mark,lastRaw:pt,lastTime:e.timeStamp,lastPressure:pressure};schedulePreview();
+}
+function addPoint(e,final=false) {
+ if(!active)return;
+ const pt=localPoint(e.clientX,e.clientY),m=active.mark;
+ if(m.type!=='stroke'){
+  let x=pt.x,y=pt.y;
+  if(e.shiftKey){const dx=x-m.x1,dy=y-m.y1;if(['rect','ellipse'].includes(m.type)){const s=Math.max(Math.abs(dx),Math.abs(dy));x=m.x1+(dx<0?-s:s);y=m.y1+(dy<0?-s:s);}else{const angle=Math.round(Math.atan2(dy,dx)/(Math.PI/4))*Math.PI/4,len=Math.hypot(dx,dy);x=m.x1+Math.cos(angle)*len;y=m.y1+Math.sin(angle)*len;}}
+  m.x2=round(clamp(x,-32768,32768));m.y2=round(clamp(y,-32768,32768));return;
+ }
+ if(m.points.length>=20000){if(!active.limitWarned){showToast('This stroke has reached its point limit. Lift and continue with another stroke.',true);active.limitWarned=true;}return;}
+ const last=m.points[m.points.length-1],dt=Math.max(1,e.timeStamp-active.lastTime),dist=Math.hypot(pt.x-active.lastRaw.x,pt.y-active.lastRaw.y),speed=dist/dt;
+ let pressure=pointPressure(e,speed);pressure=.7*active.lastPressure+.3*pressure;
+ const alpha=final?1:1-prefs.smoothing/100*.82;
+ const x=clamp(last[0]+(pt.x-last[0])*alpha,-32768,32768),y=clamp(last[1]+(pt.y-last[1])*alpha,-32768,32768);
+ if(Math.hypot(x-last[0],y-last[1])>=.24||(Math.abs(pressure-last[2])>.06&&m.tool==='brush'))m.points.push([round(x),round(y),round(pressure)]);
+ active.lastRaw=pt;active.lastTime=e.timeStamp;active.lastPressure=pressure;
+}
+function movePointer(e) {
+ if(pointers.has(e.pointerId))pointers.set(e.pointerId,{x:e.clientX,y:e.clientY,type:e.pointerType});
+ if(gesture){e.preventDefault();updateGesture();return;}
+ if(panning?.id===e.pointerId){e.preventDefault();view.tx=panning.tx+e.clientX-panning.x;view.ty=panning.ty+e.clientY-panning.y;view.fitted=false;applyView();return;}
+ if(active?.id!==e.pointerId)return;
+ e.preventDefault();const events=typeof e.getCoalescedEvents==='function'?e.getCoalescedEvents():[];
+ for(const ev of events.length?events:[e])addPoint(ev);schedulePreview();
+}
+function stopMark(cancel=false) {
+ if(drawFrame){cancelAnimationFrame(drawFrame);drawFrame=0;}
+ const a=active;active=null;clearPreview();
+ if(a&&!cancel){const m=a.mark;if(m.type==='stroke'||Math.hypot(m.x2-m.x1,m.y2-m.y1)>.5)commitMark(m);}
+ $('emptyHint').hidden=project.marks.length>0;
+}
+function endPointer(e,cancel=false) {
+ if(active?.id===e.pointerId){if(!cancel)addPoint(e,true);stopMark(cancel);}
+ pointers.delete(e.pointerId);
+ if(panning?.id===e.pointerId){panning=null;stage.classList.remove('panning');}
+ if(gesture&&[...pointers.values()].filter(p=>p.type==='touch').length<2)gesture=null;
+ if(pointers.size===0){ignoreUntilUp=false;gesture=null;}
+}
+stage.addEventListener('pointerdown',beginMark);
+stage.addEventListener('pointermove',movePointer);
+stage.addEventListener('pointerup',e=>endPointer(e));
+stage.addEventListener('pointercancel',e=>endPointer(e,true));
+stage.addEventListener('lostpointercapture',e=>{if(active?.id===e.pointerId||pointers.has(e.pointerId))endPointer(e,true);});
+stage.addEventListener('contextmenu',e=>e.preventDefault());
+stage.addEventListener('wheel',e=>{if(e.target.closest('button'))return;e.preventDefault();if(active)return;zoomAt(Math.exp(-clamp(e.deltaY,-150,150)*.003),e.clientX,e.clientY);},{passive:false});
+new ResizeObserver(()=>{if(view.fitted)fitView();}).observe(stage);
+// Autosave is best-effort local storage, never a cloud backup. Only a successful
+// transaction changes the LED to Saved; failures remain visible and exportable.
+function openDB() {
+ return new Promise((resolve,reject)=>{
+  if(!globalThis.indexedDB){reject(new Error('IndexedDB is unavailable.'));return;}
+  let settled=false;const timer=setTimeout(()=>{settled=true;reject(new Error('Storage did not respond.'));},2000);
+  const req=indexedDB.open('inkwell-local',1);
+  req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('workspace'))req.result.createObjectStore('workspace');};
+  req.onerror=()=>{if(!settled){settled=true;clearTimeout(timer);reject(req.error);}};
+  req.onsuccess=()=>{if(settled){req.result.close();return;}settled=true;clearTimeout(timer);resolve(req.result);};
+ });
+}
+function dbRead() {return new Promise((resolve,reject)=>{const t=db.transaction('workspace','readonly'),r=t.objectStore('workspace').get('current');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});}
+function dbWrite(envelope) {return new Promise((resolve,reject)=>{const t=db.transaction('workspace','readwrite');t.objectStore('workspace').put(envelope,'current');t.oncomplete=resolve;t.onerror=()=>reject(t.error);t.onabort=()=>reject(t.error||new Error('Storage transaction was canceled.'));});}
+function markDirty() {dirty=true;revision++;setStatus('dirty','Unsaved changes');clearTimeout(saveTimer);saveTimer=setTimeout(saveNow,350);}
+async function saveNow() {
+ clearTimeout(saveTimer);if(!dirty)return;
+ if(saving){saveAgain=true;return;}
+ saving=true;saveAgain=false;const currentRevision=revision,envelope={updated:Date.now(),tabId,project};setStatus('saving','Saving on this device…');
+ try{
+  if(storageBackend==='indexeddb')await dbWrite(envelope);
+  else if(storageBackend==='localstorage')localStorage.setItem('inkwell.autosave',JSON.stringify(envelope));
+  else throw new Error('Browser storage is unavailable');
+  if(currentRevision===revision){dirty=false;setStatus('saved','Saved on this device');}
+  channel?.postMessage({tabId,updated:envelope.updated});
+ }catch(error){
+  // A quota or permission failure must never silently discard the current work.
+  setStatus('error','Not saved · export JSON');showToast('Autosave could not write to browser storage. Use File → Save editable project to keep your drawing.',true);
+ }finally{saving=false;if(saveAgain||currentRevision!==revision)saveNow();}
+}
+channel?.addEventListener('message',event=>{
+ if(event.data?.tabId===tabId)return;
+ $('sessionBanner').textContent='Another INKWELL tab just saved to this browser. Save a JSON copy before continuing; the next edit here will replace that autosave.';$('sessionBanner').hidden=false;
+});
+async function initializeStorage() {
+ let stored=null;
+ try{db=await openDB();storageBackend='indexeddb';stored=await dbRead();}
+ catch(_){
+  try{localStorage.setItem('inkwell.storage-test','1');localStorage.removeItem('inkwell.storage-test');storageBackend='localstorage';}
+  catch(_){storageBackend='memory';}
+ }
+ // A fallback save from an earlier session may be newer than IndexedDB.
+ try{const fallback=JSON.parse(localStorage.getItem('inkwell.autosave')||'null');if(fallback&&(!stored||fallback.updated>stored.updated))stored=fallback;}catch(_){}
+ if(stored&&revision===0){
+  try{project=validateProject(stored.project);history=[project];historyIndex=0;renderAll();syncPaper();syncHistory();fitView();setStatus('saved','Restored from this device');}
+  catch(error){$('sessionBanner').textContent=`Saved data could not be restored: ${error.message} The stored data has not been overwritten. Start drawing to create a new workspace, or open a JSON backup.`;$('sessionBanner').hidden=false;setStatus('error','Saved data needs attention');}
+ }else if(storageBackend==='memory')setStatus('error','Storage unavailable · save JSON');
+ else if(!dirty)setStatus('saved','Ready · saved locally after a mark');
+ initialized=true;
+}
+document.addEventListener('visibilitychange',()=>{if(document.hidden){stopMark(false);saveNow();}});
+window.addEventListener('pagehide',()=>{stopMark(false);saveNow();});
+window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
+// Export helpers. Erasers operate on the ink layer only; paper and guides are
+// composed afterwards. Native codecs are checked so PNG cannot masquerade as WebP.
+function inkBounds() {
+ if(cacheBoundsProject===project)return cacheBounds;
+ const w=inkCanvas.width,h=inkCanvas.height,data=inkCtx.getImageData(0,0,w,h).data;
+ let left=w,top=h,right=-1,bottom=-1;
+ for(let y=0;y<h;y++){for(let x=0;x<w;x++){if(data[(y*w+x)*4+3]>0){if(x<left)left=x;if(y<top)top=y;if(x>right)right=x;if(y>bottom)bottom=y;}}}
+ cacheBoundsProject=project;cacheBounds=right<left?null:{x:left,y:top,width:right-left+1,height:bottom-top+1};return cacheBounds;
+}
+function exportOptions() {
+ const format=$('exportFormat').value,p=project.paper,scale=Number($('exportScale').value),padding=clamp(Number($('exportPadding').value)||0,0,200);
+ const crop=$('exportCrop').value;let region={x:0,y:0,width:p.width,height:p.height},empty=false;
+ if(crop==='ink'){
+  const b=inkBounds();if(b){const x=Math.max(0,b.x-padding),y=Math.max(0,b.y-padding),right=Math.min(p.width,b.x+b.width+padding),bottom=Math.min(p.height,b.y+b.height+padding);region={x,y,width:right-x,height:bottom-y};}else empty=true;
+ }
+ const transparent=$('exportTransparent').checked&&!['jpeg','bmp'].includes(format);
+ return {format,scale,region,empty,crop,padding,transparent,guides:$('exportGuides').checked,quality:Number($('exportQuality').value)/100,width:Math.max(1,Math.round(region.width*scale)),height:Math.max(1,Math.round(region.height*scale))};
+}
+function renderRegion(options,previewLimit=0,doc=project) {
+ const r=options.region;
+ const reduction=previewLimit?Math.min(1,previewLimit/Math.max(options.width,options.height)):1;
+ const width=Math.max(1,Math.round(options.width*reduction)),height=Math.max(1,Math.round(options.height*reduction));
+ const out=makeCanvas(width,height),ctx=ctx2d(out),ink=makeCanvas(width,height),ic=ctx2d(ink);
+ const sx=width/r.width,sy=height/r.height;
+ ic.setTransform(sx,0,0,sy,-r.x*sx,-r.y*sy);ic.beginPath();ic.rect(0,0,doc.paper.width,doc.paper.height);ic.clip();
+ for(const mark of doc.marks)renderMark(ic,mark);
+ if(!options.transparent){ctx.fillStyle=doc.paper.color;ctx.fillRect(0,0,width,height);}
+ if(options.guides){ctx.save();ctx.setTransform(sx,0,0,sy,-r.x*sx,-r.y*sy);drawGuides(ctx,doc.paper);ctx.restore();}
+ ctx.drawImage(ink,0,0);ink.width=1;ink.height=1;return out;
+}
+function svgMark(mark,erase=false) {
+ const color=erase?'#000000':mark.color,opacity=erase?1:mark.opacity;
+ if(mark.type==='text'){
+  const lines=mark.text.split('\n').map((line,i)=>`<tspan x="${round(mark.x)}" y="${round(mark.y+i*mark.fontSize*1.25)}">${xml(line)}</tspan>`).join('');
+  return `<text font-family="${xml(fontName(mark.fontFamily))}" font-size="${mark.fontSize}" fill="${color}" opacity="${opacity}" dominant-baseline="text-before-edge" xml:space="preserve">${lines}</text>`;
+ }
+ const g=geometry(mark);return `<path d="${g.d}" ${g.fill?`fill="${color}"`:`fill="none" stroke="${color}" stroke-width="${mark.width}" stroke-linecap="round" stroke-linejoin="round"`} opacity="${opacity}"/>`;
+}
+function svgGuides(p) {
+ if(p.pattern==='blank')return {defs:'',body:''};
+ const s=p.spacing;
+ if(p.pattern==='dots'){
+  const lastX=Math.ceil(p.width/s)*s-s,lastY=Math.ceil(p.height/s)*s-s;
+  if(lastX<s||lastY<s)return {defs:'',body:''};
+  return {defs:`<pattern id="paper-guides" x="${s/2}" y="${s/2}" width="${s}" height="${s}" patternUnits="userSpaceOnUse"><circle cx="${s/2}" cy="${s/2}" r="1.5" fill="#859584"/></pattern>`,body:`<rect x="${s-2}" y="${s-2}" width="${lastX-s+4}" height="${lastY-s+4}" fill="url(#paper-guides)" opacity="0.28"/>`};
+ }
+ let d='';
+ for(let y=s;y<p.height;y+=s)d+=`M 0 ${round(y+.5)} H ${p.width} `;
+ if(p.pattern==='grid')for(let x=s;x<p.width;x+=s)d+=`M ${round(x+.5)} 0 V ${p.height} `;
+ return {defs:'',body:`<path d="${d}" fill="none" stroke="#859584" stroke-width="1" opacity="0.28"/>`};
+}
+function buildSVG(options,doc=project) {
+ const p=doc.paper,r=options.region;let ink='',defs='',maskId=0;
+ for(let i=0;i<doc.marks.length;i++){
+  const m=doc.marks[i];
+  if(m.type==='stroke'&&m.tool==='eraser'){
+   let erased=svgMark(m,true);
+   while(i+1<doc.marks.length&&doc.marks[i+1].type==='stroke'&&doc.marks[i+1].tool==='eraser')erased+=svgMark(doc.marks[++i],true);
+   if(!ink)continue;
+   const id=`erase-${maskId++}`;
+   defs+=`<mask id="${id}" maskUnits="userSpaceOnUse" x="0" y="0" width="${p.width}" height="${p.height}" style="mask-type:luminance"><rect width="${p.width}" height="${p.height}" fill="white"/>${erased}</mask>`;
+   ink=`<g mask="url(#${id})">${ink}</g>`;
+  }else ink+=svgMark(m);
+ }
+ const guides=options.guides?svgGuides(p):{defs:'',body:''};
+ const bg=options.transparent?'':`<rect x="${r.x}" y="${r.y}" width="${r.width}" height="${r.height}" fill="${p.color}"/>`;
+ return `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="${options.width}" height="${options.height}" viewBox="${r.x} ${r.y} ${r.width} ${r.height}"><title>${xml(doc.title)}</title><desc>Created with INKWELL ${VERSION}. Hand-drawn strokes are vector paths; typed notes use system fonts.</desc><defs><clipPath id="sheet-clip"><rect width="${p.width}" height="${p.height}"/></clipPath>${defs}${guides.defs}</defs>${bg}<g clip-path="url(#sheet-clip)">${guides.body}${ink}</g></svg>`;
+}
+function encodeBMP(canvas) {
+ const w=canvas.width,h=canvas.height,stride=(w*3+3)&~3,size=54+stride*h,bytes=new Uint8Array(size),v=new DataView(bytes.buffer),pixels=ctx2d(canvas).getImageData(0,0,w,h).data;
+ bytes[0]=0x42;bytes[1]=0x4d;v.setUint32(2,size,true);v.setUint32(10,54,true);v.setUint32(14,40,true);v.setInt32(18,w,true);v.setInt32(22,h,true);v.setUint16(26,1,true);v.setUint16(28,24,true);v.setUint32(34,stride*h,true);v.setInt32(38,3780,true);v.setInt32(42,3780,true);
+ for(let y=0;y<h;y++){let dst=54+(h-1-y)*stride;for(let x=0;x<w;x++){const src=(y*w+x)*4;bytes[dst++]=pixels[src+2];bytes[dst++]=pixels[src+1];bytes[dst++]=pixels[src];}}
+ return new Blob([bytes],{type:'image/bmp'});
+}
+const canvasBlob=(c,type,quality)=>new Promise((resolve,reject)=>c.toBlob(blob=>{if(!blob){reject(new Error('The browser could not create this image. Try a smaller output scale.'));return;}if(blob.type!==type){reject(new Error(`This browser cannot encode ${type.split('/')[1].toUpperCase()}. Choose PNG instead.`));return;}resolve(blob);},type,quality));
+function assertExportSize(options) {if(options.format!=='svg'&&(options.width*options.height>EXPORT_PIXELS||Math.max(options.width,options.height)>8192))throw new Error('That export exceeds the 16-megapixel / 8192-pixel safety limit. Choose a lower scale or crop to ink.');}
+async function makeImage(options,doc=project) {
+ assertExportSize(options);if(options.format==='svg')return new Blob([buildSVG(options,doc)],{type:'image/svg+xml'});
+ const c=renderRegion(options,0,doc);let blob;
+ try{blob=options.format==='bmp'?encodeBMP(c):await canvasBlob(c,`image/${options.format}`,options.quality);}finally{c.width=1;c.height=1;}
+ return blob;
+}
+const filename = () => (project.title.replace(/[<>:"/\\|?*\u0000-\u001f]/g,'-').trim().replace(/[. ]+$/,'').slice(0,85)||'Untitled sketch');
+function triggerDownload(blob,name) {const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),120000);}
+function saveProjectFile() {stopMark(false);const blob=new Blob([JSON.stringify({...project,version:VERSION,exported:new Date().toISOString()})],{type:'application/json'});triggerDownload(blob,`${filename()}.inkwell.json`);showToast('Editable JSON prepared. Keep it as your project backup.');}
+let previewTimer=0,exportGeneration=0,generating=false;
+function clearExportReady() {exportGeneration++;$('exportReady').hidden=true;lastExportFile=null;if(lastExportURL){URL.revokeObjectURL(lastExportURL);lastExportURL=null;}}
+function updateExport() {
+ clearTimeout(previewTimer);const format=$('exportFormat').value;
+ $('qualityField').hidden=!['jpeg','webp'].includes(format);$('qualityOutput').textContent=`${$('exportQuality').value}%`;
+ $('paddingField').hidden=$('exportCrop').value!=='ink';$('exportTransparent').disabled=['jpeg','bmp'].includes(format);
+ const notes={png:'Lossless image. A good choice for handwriting, sketches, and transparent signatures.',jpeg:'Smaller photographic-style file. JPEG uses a solid paper background; it cannot keep transparency.',webp:'Compact image with optional transparency. Quality controls compression. Encoding support depends on the browser.',svg:'Scalable vector paths, including pressure and erasing. Typed labels use system fonts; font appearance can vary between devices.',bmp:'Uncompressed 24-bit bitmap. Large file, solid paper background; no transparency.'};
+ $('formatNote').textContent=notes[format];$('exportError').hidden=true;
+ try{
+  const options=exportOptions();assertExportSize(options);
+  $('exportDimensions').textContent=`${options.width.toLocaleString()} × ${options.height.toLocaleString()} ${format==='svg'?'px · vector':'pixels'}`;
+  $('exportSummary').textContent=`${options.crop==='ink'?(options.empty?'No visible ink; using the full sheet':'Cropped to visible ink'):'The full sheet'}${options.guides?', with guides':', without guides'}${options.transparent?' · transparent':''}.`;
+  const rendered=renderRegion(options,600),preview=$('exportPreview');preview.width=rendered.width;preview.height=rendered.height;ctx2d(preview).drawImage(rendered,0,0);rendered.width=1;rendered.height=1;
+  $('downloadImage').disabled=generating;
+ }catch(error){$('exportError').textContent=error.message;$('exportError').hidden=false;$('downloadImage').disabled=true;}
+}
+function scheduleExportPreview() {clearExportReady();clearTimeout(previewTimer);previewTimer=setTimeout(updateExport,100);}
+function openExport() {clearExportReady();$('exportTransparent').checked=project.paper.transparent;openDialog('exportDialog');updateExport();}
+async function downloadImage() {
+ if(generating)return;generating=true;const generation=exportGeneration,doc=project,base=filename(),button=$('downloadImage');button.disabled=true;$('exportError').hidden=true;
+ const previous=button.innerHTML;button.textContent='Preparing image…';
+ try{
+  const options=exportOptions(),blob=await makeImage(options,doc),ext=options.format==='jpeg'?'jpg':options.format,name=`${base}.${ext}`;
+  if(generation!==exportGeneration){showToast('Export settings changed. Press Download image again.');return;}
+  if(lastExportURL)URL.revokeObjectURL(lastExportURL);lastExportURL=URL.createObjectURL(blob);lastExportFile=new File([blob],name,{type:blob.type});
+  const link=$('downloadAgain');link.href=lastExportURL;link.download=name;$('exportReady').hidden=false;
+  try{$('shareImage').hidden=!(navigator.canShare&&navigator.canShare({files:[lastExportFile]}));}catch(_){$('shareImage').hidden=true;}
+  link.click();showToast(`${ext.toUpperCase()} ready · ${options.width} × ${options.height}.`);
+ }catch(error){$('exportError').textContent=error.message;$('exportError').hidden=false;showToast('Export did not finish. Your drawing is unchanged.',true);}
+ finally{generating=false;button.innerHTML=previous;button.disabled=false;try{assertExportSize(exportOptions());}catch(_){button.disabled=true;}}
+}
+async function printDrawing() {
+ const button=$('printButton');button.disabled=true;
+ try{
+  const options={...exportOptions(),transparent:false,format:'png',scale:1};options.width=options.region.width;options.height=options.region.height;
+  const c=renderRegion(options),image=$('printImage');image.src=c.toDataURL('image/png');c.width=1;c.height=1;
+  if(image.decode)await image.decode();window.print();
+ }catch(error){showToast(`Could not prepare printing: ${error.message}`,true);}finally{button.disabled=false;}
+}
+// Controls and project actions.
+const colors=[['#243d36','Forest ink'],['#242424','Charcoal'],['#6b756d','Slate'],['#bd422b','Vermilion'],['#df8a38','Ochre'],['#efc94c','Sunflower'],['#327c64','Leaf'],['#3779b2','Blue'],['#5b53a3','Violet'],['#bd6590','Rose'],['#967352','Walnut'],['#ffffff','White']];
+for(const [hex,name] of colors){const b=document.createElement('button');b.className='swatch';b.style.setProperty('--swatch',hex);b.dataset.color=hex;b.setAttribute('aria-label',`${name} ${hex}`);b.title=name;b.setAttribute('aria-pressed',String(prefs.color===hex));b.addEventListener('click',()=>setInk(hex));$('swatches').append(b);}
+function setInk(color){if(!isHex(color)){showToast('Use a six-digit hex color, such as #243D36.',true);$('inkHex').value=prefs.color.toUpperCase();return;}prefs.color=color.toLowerCase();syncTool();savePrefs();}
+function syncTool(){
+ document.querySelectorAll('[data-tool]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tool===tool)));
+ $('inkColor').value=prefs.color;$('inkHex').value=prefs.color.toUpperCase();
+ document.querySelectorAll('[data-color]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.color===prefs.color)));
+ const width=prefs.widths[tool]||4,opacity=prefs.opacities[tool]||100;
+ $('sizeInput').value=width;$('sizeOutput').textContent=`${width} px`;$('opacityInput').value=opacity;$('opacityOutput').textContent=`${opacity}%`;
+ $('sizeInput').disabled=['hand','text'].includes(tool);$('opacityInput').disabled=['hand','eraser'].includes(tool);
+ $('smoothingInput').value=prefs.smoothing;$('smoothingOutput').textContent=`${prefs.smoothing}%`;
+ $('pressureToggle').checked=prefs.pressure;$('penOnlyToggle').checked=prefs.penOnly;$('fillToggle').checked=prefs.fill;
+ $('brushPreview').setAttribute('stroke',tool==='eraser'?'#8d9689':prefs.color);$('brushPreview').setAttribute('stroke-width',Math.min(22,width));$('brushPreview').setAttribute('opacity',tool==='eraser'?1:opacity/100);
+ $('toolStatus').textContent=tool==='hand'?'Move · drag the paper':tool==='text'?'Text · tap to place a note':`${prettyTool(tool)} · ${width} px${tool==='highlighter'?` · ${opacity}%`:''}`;
+ stage.style.cursor=tool==='hand'?'grab':tool==='text'?'text':'crosshair';
+ document.querySelectorAll('[data-size]').forEach(b=>b.classList.toggle('active',Number(b.dataset.size)===width));
+}
+function setTool(value){stopMark(false);tool=value;syncTool();}
+function setMode(mode){prefs.mode=mode;document.documentElement.dataset.mode=mode;document.querySelectorAll('button[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));if(mode==='easy'&&!['pen','brush','highlighter','eraser','hand'].includes(tool))setTool('pen');savePrefs();}
+function setTheme(theme){prefs.theme=theme;document.documentElement.dataset.theme=theme;$('themeSelect').value=theme;savePrefs();}
+function closeInspector(){if(window.innerWidth<=860){$('workspace').classList.remove('inspector-open');$('inspectorToggle').setAttribute('aria-expanded','false');}}
+function toggleInspector(){
+ if(window.innerWidth<=860){const open=$('workspace').classList.toggle('inspector-open');$('inspectorToggle').setAttribute('aria-expanded',String(open));}
+ else{const hidden=$('workspace').classList.toggle('inspector-hidden');$('inspectorToggle').setAttribute('aria-expanded',String(!hidden));}
+}
+function openNew(){closeDialog('fileDialog');$('newName').value='Untitled sketch';$('presetSelect').value=window.innerWidth<=540?'1000,1600':'1600,1000';$('newWidth').value=window.innerWidth<=540?1000:1600;$('newHeight').value=window.innerWidth<=540?1600:1000;$('newTransparent').checked=false;$('newError').hidden=true;openDialog('newDialog');}
+function resetWorkspace(){
+ prefs=clone(defaults);setMode(prefs.mode);setTheme(prefs.theme);tool='pen';syncTool();project=newDefaultProject();history=[project];historyIndex=0;
+ $('sessionBanner').hidden=true;setProject(project,{record:false,fit:true});showToast('Fresh start. The workspace and preferences are reset.');
+}
+document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>b.closest('dialog').close()));
+document.querySelectorAll('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close();}}));
+document.querySelectorAll('[data-tool]').forEach(b=>b.addEventListener('click',()=>setTool(b.dataset.tool)));
+document.querySelectorAll('button[data-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
+document.querySelectorAll('[data-size]').forEach(b=>b.addEventListener('click',()=>{if(!['hand','text'].includes(tool)){prefs.widths[tool]=Number(b.dataset.size);syncTool();savePrefs();}}));
+document.querySelectorAll('[data-pattern]').forEach(b=>b.addEventListener('click',()=>{if(project.paper.pattern!==b.dataset.pattern)updatePaper({pattern:b.dataset.pattern});}));
+$('inkColor').addEventListener('input',e=>setInk(e.target.value));$('inkHex').addEventListener('change',e=>{const s=e.target.value.trim();setInk(s.startsWith('#')?s:'#'+s);});
+$('sizeInput').addEventListener('input',e=>{prefs.widths[tool]=Number(e.target.value);syncTool();savePrefs();});
+$('smoothingInput').addEventListener('input',e=>{prefs.smoothing=Number(e.target.value);syncTool();savePrefs();});
+$('opacityInput').addEventListener('input',e=>{prefs.opacities[tool]=Number(e.target.value);syncTool();savePrefs();});
+for(const [id,key] of [['pressureToggle','pressure'],['penOnlyToggle','penOnly'],['fillToggle','fill']])$(id).addEventListener('change',e=>{prefs[key]=e.target.checked;savePrefs();});
+$('paperColor').addEventListener('change',e=>updatePaper({color:e.target.value}));$('paperTransparent').addEventListener('change',e=>updatePaper({transparent:e.target.checked}));
+$('spacingInput').addEventListener('input',e=>$('spacingOutput').textContent=`${e.target.value} px`);$('spacingInput').addEventListener('change',e=>updatePaper({spacing:Number(e.target.value)}));
+$('themeSelect').addEventListener('change',e=>setTheme(e.target.value));
+$('projectTitle').addEventListener('input',e=>{project={...project,title:e.target.value.trim()||'Untitled sketch'};history[historyIndex]=project;markDirty();});
+$('fileButton').addEventListener('click',()=>openDialog('fileDialog'));$('helpButton').addEventListener('click',()=>openDialog('helpDialog'));$('fileHelp').addEventListener('click',()=>{closeDialog('fileDialog');openDialog('helpDialog');});
+$('exportButton').addEventListener('click',openExport);$('downloadImage').addEventListener('click',downloadImage);$('printButton').addEventListener('click',printDrawing);
+$('saveProject').addEventListener('click',saveProjectFile);$('backupNew').addEventListener('click',saveProjectFile);$('confirmBackup').addEventListener('click',saveProjectFile);
+$('newButton').addEventListener('click',openNew);$('fileNew').addEventListener('click',openNew);
+$('undoButton').addEventListener('click',undo);$('redoButton').addEventListener('click',redo);
+$('zoomIn').addEventListener('click',()=>zoomAt(1.25));$('zoomOut').addEventListener('click',()=>zoomAt(.8));$('zoomReset').addEventListener('click',()=>zoomAt(1/view.scale));$('fitButton').addEventListener('click',fitView);
+$('inspectorToggle').addEventListener('click',toggleInspector);$('closeInspector').addEventListener('click',closeInspector);$('inspectorScrim').addEventListener('click',closeInspector);
+$('presetSelect').addEventListener('change',e=>{if(e.target.value!=='custom'){const [w,h]=e.target.value.split(',').map(Number);$('newWidth').value=w;$('newHeight').value=h;}});
+for(const id of ['newWidth','newHeight'])$(id).addEventListener('input',()=>$('presetSelect').value='custom');
+$('newForm').addEventListener('submit',e=>{e.preventDefault();const w=Number($('newWidth').value),h=Number($('newHeight').value);
+ if(!Number.isInteger(w)||!Number.isInteger(h)||w<100||h<100||w>4096||h>4096||w*h>MAX_PIXELS){$('newError').textContent='Use whole pixels from 100 to 4096 per side, with no more than 12 megapixels in total.';$('newError').hidden=false;return;}
+ setProject(freshProject($('newName').value.trim()||'Untitled sketch',w,h,$('newTransparent').checked),{fit:true});closeDialog('newDialog');showToast('New sheet ready. Undo will restore the previous sheet.');
+});
+$('textForm').addEventListener('submit',e=>{e.preventDefault();const text=$('noteText').value,size=Number($('textSize').value);if(!text.trim()||!finite(size)||size<8||size>240)return;
+ commitMark({id:uid(),type:'text',x:textAnchor.x,y:textAnchor.y,text,fontSize:size,fontFamily:$('textFont').value,color:prefs.color,opacity:(prefs.opacities.text||100)/100});closeDialog('textDialog');
+});
+$('clearButton').addEventListener('click',()=>{closeDialog('fileDialog');if(!project.marks.length){showToast('The paper is already clear.');return;}ask('Clear the ink?','The paper stays. All ink, shapes, and text will be cleared. You can undo this.',()=>setProject({...project,marks:[]}),'Clear ink',false);});
+$('freshButton').addEventListener('click',()=>{closeDialog('fileDialog');ask('A completely fresh start?','This resets the drawing, undo history, tools, and preferences on this device. Save your current project first. This action cannot be undone.',resetWorkspace,'Reset workspace');});
+$('confirmAccept').addEventListener('click',()=>{const action=confirmAction;confirmAction=null;closeDialog('confirmDialog');action?.();});
+$('confirmDialog').addEventListener('close',()=>{confirmAction=null;});
+$('openProject').addEventListener('click',()=>{$('projectFile').value='';$('projectFile').click();});
+async function readProjectFile(file){
+ if(!file)return;
+ try{
+  if(file.size>25*1024*1024)throw new Error('This file is larger than the 25 MB project limit.');
+  let raw;try{raw=JSON.parse(await file.text());}catch(_){throw new Error('The file is not valid JSON. Your current drawing was not changed.');}
+  const incoming=validateProject(raw);closeDialog('fileDialog');
+  const load=()=>{setProject(incoming,{fit:true});showToast('Project opened. Undo can restore the previous workspace.');};
+  if(project.marks.length)ask('Open this project?',`“${incoming.title}” will replace the current workspace. Save a JSON copy first to keep both projects. You can also undo.`,load,'Open project');else load();
+ }catch(error){showToast(error.message,true);}
+}
+$('projectFile').addEventListener('change',e=>readProjectFile(e.target.files?.[0]));
+// Drag-and-drop project opening is local only; image/SVG imports are deliberately
+// not accepted, avoiding remote resources and script-bearing image formats.
+stage.addEventListener('dragover',e=>{if([...e.dataTransfer.types].includes('Files'))e.preventDefault();});
+stage.addEventListener('drop',e=>{e.preventDefault();const f=e.dataTransfer.files?.[0];if(f&&/\.json$/i.test(f.name))readProjectFile(f);else showToast('Drop an INKWELL .json project here. Image files are export outputs.',true);});
+for(const id of ['exportFormat','exportScale','exportCrop','exportPadding','exportQuality','exportTransparent','exportGuides'])$(id).addEventListener('input',scheduleExportPreview);
+$('shareImage').addEventListener('click',async()=>{if(!lastExportFile||!navigator.share)return;try{await navigator.share({files:[lastExportFile],title:project.title});}catch(error){if(error.name!=='AbortError')showToast('Sharing was unavailable. Use the Save image link instead.',true);}});
+window.addEventListener('keydown',e=>{
+ const input=e.target instanceof Element&&e.target.closest('input,select,textarea,[contenteditable=true]');
+ if(input)return;
+ if(document.querySelector('dialog[open]'))return;
+ const command=e.ctrlKey||e.metaKey,k=e.key.toLowerCase();
+ if(command){
+  if(k==='z'){e.preventDefault();e.shiftKey?redo():undo();}
+  else if(k==='y'){e.preventDefault();redo();}
+  else if(k==='s'){e.preventDefault();saveProjectFile();}
+  else if(k==='e'){e.preventDefault();openExport();}
+  return;
+ }
+ if(e.altKey)return;
+ if(e.code==='Space'){e.preventDefault();spaceHeld=true;if(!active)stage.style.cursor='grab';return;}
+ if(k==='escape'){stopMark(true);panning=null;gesture=null;pointers.clear();ignoreUntilUp=false;stage.classList.remove('panning');closeInspector();return;}
+ if(k==='0'){e.preventDefault();fitView();return;}
+ if(k==='+'||k==='='){e.preventDefault();zoomAt(1.25);return;}
+ if(k==='-'){e.preventDefault();zoomAt(.8);return;}
+ if(k==='['||k===']'){if(!['hand','text'].includes(tool)){prefs.widths[tool]=clamp((prefs.widths[tool]||4)+(k==='['?-1:1),1,80);syncTool();savePrefs();}return;}
+ const tools={p:'pen',b:'brush',h:'highlighter',e:'eraser',v:'hand',l:'line',a:'arrow',r:'rect',o:'ellipse',t:'text'};
+ if(tools[k]){if(!['pen','brush','highlighter','eraser','hand'].includes(tools[k])&&prefs.mode!=='advanced')setMode('advanced');setTool(tools[k]);}
+});
+window.addEventListener('keyup',e=>{if(e.code==='Space'){spaceHeld=false;syncTool();}});
+window.addEventListener('blur',()=>{spaceHeld=false;stopMark(false);panning=null;gesture=null;pointers.clear();ignoreUntilUp=false;stage.classList.remove('panning');});
+// Built-in sample: editable generated vector marks, never loaded on first use.
+function sampleProject(){
+ const d=freshProject('A little ink');d.paper.pattern='dots';const marks=d.marks;
+ const stroke=(pts,color='#243d36',width=6,tool='pen',opacity=1)=>marks.push({id:uid(),type:'stroke',tool,color,width,opacity,points:pts.map((p,i)=>[round(p[0]),round(p[1]),p[2]??round(.72+.15*Math.sin(i*.23))])});
+ const curve=(start,segments,color='#243d36',width=8,tool='pen',opacity=1)=>{
+  const pts=[[...start,.75]];let a=start;
+  for(const c of segments){const n=40;for(let i=1;i<=n;i++){const t=i/n,u=1-t;pts.push([u*u*u*a[0]+3*u*u*t*c[0]+3*u*t*t*c[2]+t*t*t*c[4],u*u*u*a[1]+3*u*u*t*c[1]+3*u*t*t*c[3]+t*t*t*c[5]]);}a=[c[4],c[5]];}stroke(pts,color,width,tool,opacity);
+ };
+ const label=(text,x,y,size,color='#243d36',font='sans')=>marks.push({id:uid(),type:'text',text,x,y,fontSize:size,fontFamily:font,color,opacity:1});
+ label('a little ink,',200,142,44,'#243d36','serif');label('a lot of possibility.',200,196,44,'#243d36','serif');
+ stroke([[195,628],[355,629],[520,624],[680,622],[766,625]],'#efc94c',52,'highlighter',.58);
+ curve([200,630],[[240,540,300,370,265,310],[230,280,215,410,220,520],[222,580,210,650,235,620],[260,545,290,500,330,530],[360,550,330,615,350,620],[380,645,410,600,410,560],[420,520,470,520,465,552],[450,585,410,583,410,562],[414,607,450,643,485,610],[530,560,585,325,550,295],[520,265,490,400,493,535],[495,585,498,630,530,615],[570,588,625,335,592,305],[560,278,534,395,537,530],[539,580,545,632,575,615],[595,603,616,574,623,544],[641,505,702,530,697,573],[696,620,641,652,622,610],[597,553,640,514,676,541],[699,562,714,595,752,562]],'#243d36',13,'brush');
+ curve([810,370],[[814,420,800,491,793,530]],'#bd422b',10,'brush');stroke([[789,586]],'#bd422b',12);
+ // A little plant and its hand-drawn pot.
+ curve([1045,631],[[1071,637,1151,641,1177,631],[1166,690,1156,720,1147,737],[1115,742,1091,742,1068,735],[1053,701,1049,665,1045,631]],'#243d36',6);
+ curve([1045,631],[[1068,612,1152,613,1177,631]],'#243d36',6);
+ curve([1111,624],[[1107,557,1120,494,1110,434]],'#327c64',7);
+ curve([1113,522],[[1078,526,1035,497,1030,460],[1071,463,1100,480,1113,522]],'#327c64',6);
+ curve([1114,574],[[1130,535,1179,510,1212,521],[1186,555,1156,577,1114,574]],'#327c64',6);
+ curve([1110,454],[[1112,413,1144,385,1161,386],[1164,418,1144,442,1110,454]],'#327c64',6);
+ curve([875,665],[[907,650,950,632,987,635]],'#bd422b',4);stroke([[975,622],[989,635],[975,648]],'#bd422b',4);
+ stroke([[946,301],[959,331],[993,338],[962,351],[950,380],[939,350],[907,341],[936,330],[946,301]],'#df8a38',4);
+ stroke([[1250,417],[1257,434],[1275,441],[1257,448],[1250,467],[1243,448],[1225,441],[1243,434],[1250,417]],'#df8a38',4);
+ label('Handwritten. Not a font.',213,752,26,'#626960');label('GROW AN IDEA.',1036,782,18,'#626960','mono');
+ return d;
+}
+$('sampleButton').addEventListener('click',()=>{closeDialog('fileDialog');const load=()=>setProject(sampleProject(),{fit:true});if(project.marks.length)ask('Try the sample?','The sample replaces this workspace. Save a JSON copy first to keep your current drawing. You can also undo.',load,'Load sample');else load();});
+async function setupOffline(){
+ if(location.protocol==='file:'){$('offlineStatus').textContent='Offline-ready · portable file';return;}
+ if(!('serviceWorker' in navigator)||!window.isSecureContext){$('offlineStatus').textContent='Use HTTPS for offline website caching';return;}
+ const link=document.createElement('link');link.rel='manifest';link.href='./manifest.webmanifest';document.head.append(link);
+ try{await navigator.serviceWorker.register('./sw.js',{scope:'./'});await navigator.serviceWorker.ready;$('offlineStatus').textContent='Offline website cache ready';}
+ catch(_){$('offlineStatus').textContent='Offline cache unavailable · drawing still works';}
+}
+setMode(prefs.mode);setTheme(prefs.theme);syncTool();renderAll();syncPaper();syncHistory();fitView();
+$('inspectorToggle').setAttribute('aria-expanded',String(window.innerWidth>860));
+// Feature detection uses a tiny private canvas and does not upload anything.
+try{const c=makeCanvas(1,1);for(const f of ['webp','jpeg']){if(!c.toDataURL(`image/${f}`).startsWith(`data:image/${f}`)){const opt=$('exportFormat').querySelector(`option[value="${f}"]`);opt.disabled=true;opt.textContent+= ' · unavailable in this browser';}}}catch(_){}
+const ready=initializeStorage();setupOffline();
+// Small documented integration surface. Returned projects are copies, and every
+// loaded project is validated. This also supports repeatable regression tests.
+window.Inkwell=Object.freeze({version:VERSION,ready,getProject:()=>clone(project),validateProject,getSample:sampleProject,loadProject:raw=>setProject(validateProject(raw),{fit:true}),getStatus:()=>({version:VERSION,storage:storageBackend,dirty,marks:project.marks.length,view:{...view}}),toSVG:()=>buildSVG(exportOptions())});
+})();
+</script>
+</body>
+</html>

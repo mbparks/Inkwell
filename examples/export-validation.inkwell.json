@@ -1,0 +1,74 @@
+{
+  "app": "INKWELL",
+  "schema": 1,
+  "version": "1.0.0",
+  "id": "mudbppsi-z23fn0uono",
+  "title": "Export validation",
+  "created": "2026-09-22T23:46:53.293Z",
+  "paper": {
+    "width": 400,
+    "height": 300,
+    "color": "#fffdf7",
+    "pattern": "blank",
+    "spacing": 40,
+    "transparent": true
+  },
+  "marks": [
+    {
+      "id": "mudbppsi-rvghutmi6zc",
+      "type": "stroke",
+      "color": "#ff0000",
+      "opacity": 1,
+      "tool": "pen",
+      "width": 20,
+      "points": [
+        [
+          50,
+          150,
+          1
+        ],
+        [
+          350,
+          150,
+          1
+        ]
+      ]
+    },
+    {
+      "id": "mudbppsi-s8jihk50c4k",
+      "type": "stroke",
+      "color": "#000000",
+      "opacity": 1,
+      "tool": "eraser",
+      "width": 50,
+      "points": [
+        [
+          200,
+          100,
+          1
+        ],
+        [
+          200,
+          200,
+          1
+        ]
+      ]
+    },
+    {
+      "id": "mudbppsi-qxq40xh588s",
+      "type": "stroke",
+      "color": "#0000ff",
+      "opacity": 1,
+      "tool": "pen",
+      "width": 10,
+      "points": [
+        [
+          200,
+          150,
+          1
+        ]
+      ]
+    }
+  ],
+  "exported": "2026-09-22T23:46:59.153Z"
+}
