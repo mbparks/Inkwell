@@ -1,0 +1,181 @@
+{
+  "version": "1.0.1",
+  "browser": "144.0.7559.96",
+  "mode": "set_content; real Canvas; memory storage; synthetic fault events plus native Chromium mouse/touch",
+  "passed": 33,
+  "total": 33,
+  "checks": [
+    {
+      "name": "A tap paints a visible dot without a move or animation frame",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "100 rapid mouse strokes all commit independently before animation frames",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "Mouse cancellation retains captured ink without invented cancel coordinates",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "Touch cancellation retains captured ink",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "Pen cancellation retains captured ink",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "Lost capture with no buttons preserves ink once; later up cannot duplicate it",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "Lost capture while drawing continues through window move/up listeners",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "Failed pointer capture still receives movement and release outside the stage",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "A new down after a missed up saves the old stroke and starts a separate one",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "Mouse hover after a missed release ends ink without a long connecting line",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "Pen hover after a missed release does not draw phantom ink",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "A fresh primary touch recovers stale contacts instead of starting a false pinch",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "A second finger does not erase an already-written first-finger stroke",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "Immediate two-finger navigation discards only its provisional starting dot",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "Finishing a pinch allows the next one-finger stroke",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "Palm contacts during pen ink cannot put subsequent drawing into gesture lock",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "A coalesced-event API error falls back to the dispatched move",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "An unavailable coalesced-event API still draws",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "Empty coalesced samples fall back to the dispatched move",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "Coalesced movement samples preserve a curved path",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "Subpixel final movement is retained rather than dropping the endpoint",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "Blur preserves unfinished ink and clears input ownership",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "Pagehide preserves ink and permits a fresh primary touch",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "Escape still intentionally discards the unfinished stroke",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "Undo and redo retain their behavior for an interrupted stroke",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "Eraser interruption preserves the completed part of the erase",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "A stale hand-tool pan does not hijack a new pen stroke",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "An interrupted shape keeps its known geometry rather than disappearing",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "40 native mouse strokes without dropped marks",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "25 native touch strokes without dropped marks",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "Native mouse capture loss keeps one continuous stroke",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "Native touch cancellation retains the written stroke",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "Native second-finger contact does not erase existing finger ink",
+      "passed": true,
+      "errors": []
+    }
+  ],
+  "not_tested": [
+    "Physical touchscreens and styluses",
+    "Safari and Firefox",
+    "Native durable storage",
+    "Native service worker installation",
+    "OS file dialogs"
+  ]
+}

@@ -33,7 +33,7 @@ const caches={
   async delete(name){return cachesByName.delete(name);},
   async match(request){for(const c of cachesByName.values()){const r=await c.match(request);if(r)return r;}}
 };
-await caches.open(prefix+'0.9.0');await caches.open('inkwell@https://inkwell.test/other/:0.9.0');
+await caches.open(prefix+'1.0.0');await caches.open('inkwell@https://inkwell.test/other/:1.0.0');
 let claimed=false,skipped=false;
 const self={registration:{scope},addEventListener:(name,handler)=>listeners.set(name,handler),skipWaiting:async()=>{skipped=true;},clients:{claim:async()=>{claimed=true;}}};
 vm.runInNewContext(await fs.readFile(path.join(root,'sw.js'),'utf8'),{self,caches,fetch:fakeFetch,URL,location:{origin:new URL(scope).origin},Promise,console});
@@ -46,10 +46,10 @@ let count=0;
 function check(value,label){assert.ok(value,label);console.log('PASS',label);count++;}
 await fire('install');
 check(skipped,'Install precaches all four deployed assets and requests activation');
-check(cachesByName.get(prefix+'1.0.0').data.size===4,'Offline shell cache contains the expected four URLs');
+check(cachesByName.get(prefix+'1.0.1').data.size===4,'Offline shell cache contains the expected four URLs');
 await fire('activate');
-check(claimed&&!cachesByName.has(prefix+'0.9.0'),'Activation claims clients and removes the old same-scope cache');
-check(cachesByName.has('inkwell@https://inkwell.test/other/:0.9.0'),'Activation preserves caches belonging to another deployment');
+check(claimed&&!cachesByName.has(prefix+'1.0.0'),'Activation claims clients and removes the old same-scope cache');
+check(cachesByName.has('inkwell@https://inkwell.test/other/:1.0.0'),'Activation preserves caches belonging to another deployment');
 offline=true;
 const home=await fire('fetch',{url:scope,method:'GET',mode:'navigate'});
 check((await home.text()).includes('<title>INKWELL'),'Offline root navigation returns the cached app shell');

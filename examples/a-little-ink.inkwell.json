@@ -1,10 +1,10 @@
 {
   "app": "INKWELL",
   "schema": 1,
-  "version": "1.0.0",
-  "id": "mudbpuue-5la3tas79ak",
+  "version": "1.0.1",
+  "id": "mudl0ki7-aog0acpfart",
   "title": "A little ink",
-  "created": "2026-09-22T23:47:02.628Z",
+  "created": "2026-09-23T04:07:18.989Z",
   "paper": {
     "width": 1600,
     "height": 1000,
@@ -15,7 +15,7 @@
   },
   "marks": [
     {
-      "id": "mudbpuue-lam4gksywya",
+      "id": "mudl0ki7-yt1sx56ee49",
       "type": "text",
       "color": "#243d36",
       "opacity": 1,
@@ -26,7 +26,7 @@
       "fontFamily": "serif"
     },
     {
-      "id": "mudbpuue-ojh3cgt1w6",
+      "id": "mudl0ki7-p0i4sgbuag",
       "type": "text",
       "color": "#243d36",
       "opacity": 1,
@@ -37,7 +37,7 @@
       "fontFamily": "serif"
     },
     {
-      "id": "mudbpuue-tqvf2tz43",
+      "id": "mudl0ki7-li0m84z6stq",
       "type": "stroke",
       "color": "#efc94c",
       "opacity": 0.58,
@@ -72,7 +72,7 @@
       ]
     },
     {
-      "id": "mudbpuue-svbcz8pjs7c",
+      "id": "mudl0ki7-kbd96egsg4r",
       "type": "stroke",
       "color": "#243d36",
       "opacity": 1,
@@ -4087,7 +4087,7 @@
       ]
     },
     {
-      "id": "mudbpuue-junxjqinhr",
+      "id": "mudl0ki7-bvmhec7gmb",
       "type": "stroke",
       "color": "#bd422b",
       "opacity": 1,
@@ -4302,7 +4302,7 @@
       ]
     },
     {
-      "id": "mudbpuue-e6xi3w70e17",
+      "id": "mudl0ki7-yhfyjf6n9pc",
       "type": "stroke",
       "color": "#bd422b",
       "opacity": 1,
@@ -4317,7 +4317,7 @@
       ]
     },
     {
-      "id": "mudbpuue-uhwfmtfhsbo",
+      "id": "mudl0ki7-1wreaq7m33",
       "type": "stroke",
       "color": "#243d36",
       "opacity": 1,
@@ -5132,7 +5132,7 @@
       ]
     },
     {
-      "id": "mudbpuue-7l5v8p7v0l",
+      "id": "mudl0ki7-edic0tq333p",
       "type": "stroke",
       "color": "#243d36",
       "opacity": 1,
@@ -5347,7 +5347,7 @@
       ]
     },
     {
-      "id": "mudbpuue-hc76zf4idg",
+      "id": "mudl0ki7-hyn61nwgh2o",
       "type": "stroke",
       "color": "#327c64",
       "opacity": 1,
@@ -5562,7 +5562,7 @@
       ]
     },
     {
-      "id": "mudbpuue-73cxht7d0s",
+      "id": "mudl0ki7-4iwci7y0r85",
       "type": "stroke",
       "color": "#327c64",
       "opacity": 1,
@@ -5977,7 +5977,7 @@
       ]
     },
     {
-      "id": "mudbpuue-g6hsp9d02xt",
+      "id": "mudl0ki7-wge0b97nyas",
       "type": "stroke",
       "color": "#327c64",
       "opacity": 1,
@@ -6392,7 +6392,7 @@
       ]
     },
     {
-      "id": "mudbpuue-jmzloyrkhu",
+      "id": "mudl0ki7-bse4net4rzq",
       "type": "stroke",
       "color": "#327c64",
       "opacity": 1,
@@ -6807,7 +6807,7 @@
       ]
     },
     {
-      "id": "mudbpuue-j8umwbeunpk",
+      "id": "mudl0ki7-pslx1hclf1r",
       "type": "stroke",
       "color": "#bd422b",
       "opacity": 1,
@@ -7022,7 +7022,7 @@
       ]
     },
     {
-      "id": "mudbpuue-y45wfrfnwfj",
+      "id": "mudl0ki7-s9l7qc6vqw",
       "type": "stroke",
       "color": "#bd422b",
       "opacity": 1,
@@ -7047,7 +7047,7 @@
       ]
     },
     {
-      "id": "mudbpuue-nhl865v80f",
+      "id": "mudl0ki7-emjwj922dq7",
       "type": "stroke",
       "color": "#df8a38",
       "opacity": 1,
@@ -7102,7 +7102,7 @@
       ]
     },
     {
-      "id": "mudbpuue-e542h0h8f0d",
+      "id": "mudl0ki7-z822is3arce",
       "type": "stroke",
       "color": "#df8a38",
       "opacity": 1,
@@ -7157,7 +7157,7 @@
       ]
     },
     {
-      "id": "mudbpuue-xfygpzymtqk",
+      "id": "mudl0ki7-tg0x7to45o",
       "type": "text",
       "color": "#626960",
       "opacity": 1,
@@ -7168,7 +7168,7 @@
       "fontFamily": "sans"
     },
     {
-      "id": "mudbpuue-2mbeljwcirf",
+      "id": "mudl0ki7-z0dwys6wz3t",
       "type": "text",
       "color": "#626960",
       "opacity": 1,

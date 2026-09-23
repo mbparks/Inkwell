@@ -78,7 +78,7 @@ def main() -> None:
             return page,context
         page,context=boot()
         check(page.evaluate('Inkwell.getProject().marks.length')==0,'Initial workspace is blank, not seeded with demo data')
-        check(page.evaluate('Inkwell.version')=='1.0.0','Visible version and integration API are present')
+        check(page.evaluate('Inkwell.version')=='1.0.1','Visible version and integration API are present')
         check(page.locator('[data-tool="rect"]').is_hidden(),'Easy mode hides advanced shape tools')
         def world(x,y):
             return page.evaluate('''([x,y])=>{const v=Inkwell.getStatus().view,r=document.getElementById('stage').getBoundingClientRect();return [r.left+v.tx+x*v.scale,r.top+v.ty+y*v.scale]}''',[x,y])
@@ -230,7 +230,7 @@ def main() -> None:
         touch('touchStart',[(1,x,y),(2,x+80,y+80)])
         touch('touchMove',[(1,x-20,y-20),(2,x+110,y+110)])
         touch('touchEnd',[])
-        check(mobile.evaluate('Inkwell.getProject().marks.length')==1,'Two-finger navigation cancels the unfinished finger mark')
+        check(mobile.evaluate('Inkwell.getProject().marks.length')==1,'Immediate two-finger navigation cancels its provisional starting dot')
         check(mobile.evaluate('Inkwell.getStatus().view.scale')>start_scale,'Pinch gesture changes canvas zoom')
         mobile.locator('#inspectorToggle').click()
         check(mobile.locator('#inspector').is_visible(),'Mobile settings open as a usable side panel')
@@ -258,7 +258,7 @@ def main() -> None:
         else:
             page.wait_for_function('document.getElementById("offlineStatus").textContent.includes("cache ready")')
             context.set_offline(True);page.reload();page.evaluate('Inkwell.ready')
-            check(page.evaluate('Inkwell.version')=='1.0.0','Service-worker shell reloads while offline')
+            check(page.evaluate('Inkwell.version')=='1.0.1','Service-worker shell reloads while offline')
             context.set_offline(False)
         # Destructive actions provide confirmation and reliable recovery.
         old_count=page.evaluate('Inkwell.getProject().marks.length')
@@ -285,7 +285,7 @@ def main() -> None:
         page.locator('#exportButton').click();page.select_option('#exportScale','1');page.select_option('#exportCrop','sheet');page.locator('#exportTransparent').uncheck();page.wait_for_timeout(200)
         page.screenshot(path=str(ROOT/'docs'/'export.png'))
         check(not all_errors,'No uncaught JavaScript errors across the tested workflows')
-        report={'version':'1.0.0','mode':'sandbox: real canvas/codecs; mocked storage and file delivery' if args.sandbox else 'native HTTP browser','browser':browser.version,'checks':RESULTS,'uncaught_errors':all_errors,'not_tested':['Physical iPhone/iPad Safari','Physical Android Chrome','Hardware stylus pressure and palm rejection','OS share sheet','OS print dialog']+(['Native durable storage','Service-worker offline reload','Native OS download delivery'] if args.sandbox else [])}
+        report={'version':'1.0.1','mode':'sandbox: real canvas/codecs; mocked storage and file delivery' if args.sandbox else 'native HTTP browser','browser':browser.version,'checks':RESULTS,'uncaught_errors':all_errors,'not_tested':['Physical iPhone/iPad Safari','Physical Android Chrome','Hardware stylus pressure and palm rejection','OS share sheet','OS print dialog']+(['Native durable storage','Service-worker offline reload','Native OS download delivery'] if args.sandbox else [])}
         (artifacts/'results.json').write_text(json.dumps(report,indent=2))
         browser.close()
     server.shutdown()

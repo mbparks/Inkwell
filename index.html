@@ -1,4 +1,9 @@
 <!doctype html>
+<!-- INKWELL · Copyright (C) 2026 Michael Parks / Green Shoe Garage.
+SPDX-License-Identifier: GPL-3.0-only
+This program is free software: you may redistribute and/or modify it under
+the GNU General Public License version 3. It comes WITHOUT ANY WARRANTY.
+See LICENSE in the source package or https://www.gnu.org/licenses/gpl-3.0.html. -->
 <html lang="en" data-theme="light" data-mode="easy">
 <head>
 <meta charset="utf-8">
@@ -86,7 +91,7 @@ dialog{border:1px solid var(--line);border-radius:15px;background:var(--panel);c
    <div class="sheet" id="sheet"><canvas id="paperCanvas"></canvas><canvas id="inkCanvas"></canvas><canvas id="liveCanvas"></canvas><div class="empty-hint" id="emptyHint"><svg class="icon"><use href="#i-nib"/></svg><strong>Make your mark.</strong><span>Mouse, finger, or pen. Just draw.</span></div></div>
    <div class="viewbar" aria-label="Canvas view"><button class="icon-btn" id="zoomOut" aria-label="Zoom out"><svg class="icon"><use href="#i-minus"/></svg></button><button id="zoomReset" title="Actual size (100%)">100%</button><button class="icon-btn" id="zoomIn" aria-label="Zoom in"><svg class="icon"><use href="#i-plus"/></svg></button><span class="divider"></span><button id="fitButton" title="Fit sheet (0)"><svg class="icon"><use href="#i-fit"/></svg>Fit</button></div>
   </div>
-  <div class="bottomline"><span id="toolStatus">Pen · 4 px</span><span class="desktop-hint">Space + drag to move · scroll to zoom</span><span class="mobile-only">Two fingers to move & zoom</span><span class="session-detail"><span id="strokeCount">0 marks</span> <span aria-hidden="true"> / </span> v1.0.0</span></div>
+  <div class="bottomline"><span id="toolStatus">Pen · 4 px</span><span class="desktop-hint">Space + drag to move · scroll to zoom</span><span class="mobile-only">Two fingers to move & zoom</span><span class="session-detail"><span id="strokeCount">0 marks</span> <span aria-hidden="true"> / </span> v1.0.1</span></div>
  </section>
  <div class="inspector-scrim" id="inspectorScrim"></div>
  <aside class="inspector" id="inspector" aria-label="Pen and paper settings">
@@ -99,7 +104,7 @@ dialog{border:1px solid var(--line);border-radius:15px;background:var(--panel);c
   <div class="advanced"><div class="field"><div class="field-heading"><label for="opacityInput">Ink opacity</label><output id="opacityOutput" for="opacityInput">100%</output></div><input type="range" id="opacityInput" min="5" max="100" step="5" value="100"></div><label class="check"><input type="checkbox" id="pressureToggle" checked>Vary brush width with pressure / speed</label><label class="check"><input type="checkbox" id="penOnlyToggle">Pen-only ink; fingers navigate</label><label class="check" id="fillField"><input type="checkbox" id="fillToggle">Fill boxes and ovals</label></div>
   <details open><summary>Paper & guides</summary><div class="paper-options" aria-label="Paper guides"><button class="paper-option" data-pattern="blank" aria-pressed="true"><svg class="icon"><use href="#i-page"/></svg>Plain</button><button class="paper-option" data-pattern="lined" aria-pressed="false"><svg viewBox="0 0 24 16" fill="none" stroke="currentColor"><path d="M2 3h20M2 8h20M2 13h20"/></svg>Ruled</button><button class="paper-option" data-pattern="grid" aria-pressed="false"><svg viewBox="0 0 24 16" fill="none" stroke="currentColor"><path d="M0 4h24M0 12h24M4 0v16M12 0v16M20 0v16"/></svg>Grid</button><button class="paper-option" data-pattern="dots" aria-pressed="false"><svg viewBox="0 0 24 16" fill="currentColor"><circle cx="4" cy="4" r="1.3"/><circle cx="12" cy="4" r="1.3"/><circle cx="20" cy="4" r="1.3"/><circle cx="4" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="20" cy="12" r="1.3"/></svg>Dots</button></div><div class="row between" style="margin-top:14px"><label for="paperColor" style="margin:0">Paper color</label><input type="color" id="paperColor" value="#fffdf7"></div><label class="check"><input type="checkbox" id="paperTransparent">Transparent paper</label><div class="advanced field" style="margin-top:12px"><div class="field-heading"><label for="spacingInput">Guide spacing</label><output id="spacingOutput" for="spacingInput">40 px</output></div><input type="range" id="spacingInput" min="16" max="100" step="4" value="40"></div><p class="small muted" style="font-size:10px;margin:10px 0 0">Guides are optional when exporting.</p></details>
   <details><summary>Workspace appearance</summary><label for="themeSelect">Interface theme</label><select id="themeSelect"><option value="light">Warm light</option><option value="dark">After hours</option><option value="contrast">High contrast</option></select><p class="small muted" style="margin:8px 0 0;font-size:11px">Your paper and exported ink stay the same.</p></details>
-  <div class="inspector-bottom"><div class="row"><svg class="icon" style="width:14px;height:14px"><use href="#i-shield"/></svg><strong>Yours, from first mark to last.</strong></div>No accounts. No uploads. No telemetry.<br><span id="offlineStatus">Local-first workspace</span> · v1.0.0</div>
+  <div class="inspector-bottom"><div class="row"><svg class="icon" style="width:14px;height:14px"><use href="#i-shield"/></svg><strong>Yours, from first mark to last.</strong></div>No accounts. No uploads. No telemetry.<br><span id="offlineStatus">Local-first workspace</span> · v1.0.1</div>
  </aside>
 </main>
 </div>
@@ -109,7 +114,7 @@ dialog{border:1px solid var(--line);border-radius:15px;background:var(--panel);c
 <dialog class="export-dialog" id="exportDialog" aria-labelledby="exportTitle"><div class="dialog-head"><h2 id="exportTitle">Take your marks with you.</h2><button class="icon-btn" data-close aria-label="Close"><svg class="icon"><use href="#i-close"/></svg></button></div><div class="dialog-body"><div class="export-grid"><div><div class="export-preview-wrap"><canvas id="exportPreview" aria-label="Export preview"></canvas></div><div class="preview-caption"><strong id="exportDimensions" class="mono">1600 × 1000 pixels</strong><br><span id="exportSummary">The full sheet, without guides.</span></div><div class="export-ready" id="exportReady" hidden><span>Image ready. </span><a id="downloadAgain" download>Save the image again</a><button class="secondary" id="shareImage" hidden><svg class="icon"><use href="#i-share"/></svg>Share image</button></div></div><div class="export-options"><div class="field wide"><label for="exportFormat">Image format</label><select id="exportFormat"><option value="png">PNG · crisp ink + transparency</option><option value="jpeg">JPEG · compact, solid background</option><option value="webp">WebP · small, modern image</option><option value="svg">SVG · scalable vector strokes</option><option value="bmp">BMP · uncompressed bitmap</option></select></div><div class="field"><label for="exportScale">Output scale</label><select id="exportScale"><option value="1">1× original</option><option value="2">2× resolution</option><option value="3">3× resolution</option><option value="4">4× resolution</option></select></div><div class="field"><label for="exportCrop">Export area</label><select id="exportCrop"><option value="sheet">Whole sheet</option><option value="ink">Crop to ink</option></select></div><div class="field" id="paddingField" hidden><label for="exportPadding">Crop padding (px)</label><input id="exportPadding" type="number" min="0" max="200" value="24"></div><div class="field" id="qualityField" hidden><div class="field-heading"><label for="exportQuality">Quality</label><output id="qualityOutput">92%</output></div><input id="exportQuality" type="range" min="30" max="100" value="92"></div><div class="wide"><label class="check"><input id="exportTransparent" type="checkbox">Transparent background</label><label class="check"><input id="exportGuides" type="checkbox">Include paper guides</label></div><p class="format-note wide" id="formatNote">Lossless image. A good choice for handwriting, sketches, and transparent signatures.</p></div></div><p class="error-text" id="exportError" role="alert" hidden></p></div><div class="dialog-foot"><button class="secondary" id="printButton"><svg class="icon"><use href="#i-print"/></svg>Print / PDF</button><button class="primary" id="downloadImage"><svg class="icon"><use href="#i-download"/></svg>Download image</button></div></dialog>
 <dialog id="textDialog" aria-labelledby="textTitle"><div class="dialog-head"><h2 id="textTitle">Add a note</h2><button class="icon-btn" data-close aria-label="Close"><svg class="icon"><use href="#i-close"/></svg></button></div><form id="textForm"><div class="dialog-body"><label for="noteText">Text</label><textarea id="noteText" maxlength="2000" rows="4" required placeholder="A label, a caption, a little context…"></textarea><div class="two-col" style="margin-top:16px"><div><label for="textSize">Text size (px)</label><input type="number" id="textSize" min="8" max="240" value="36" required></div><div><label for="textFont">Typeface</label><select id="textFont"><option value="sans">Sans serif</option><option value="serif">Serif</option><option value="mono">Monospace</option></select></div></div><p class="small muted">Placed where you tapped, using the current ink color. Handwriting does not need this tool—just use the pen.</p></div><div class="dialog-foot"><button type="submit" class="primary">Place text</button></div></form></dialog>
 <dialog id="confirmDialog" aria-labelledby="confirmTitle"><div class="dialog-head"><h2 id="confirmTitle">Start again?</h2><button class="icon-btn" data-close aria-label="Close"><svg class="icon"><use href="#i-close"/></svg></button></div><div class="dialog-body"><p id="confirmMessage" class="dialog-intro"></p></div><div class="dialog-foot"><button id="confirmBackup" class="secondary">Save current JSON</button><button data-close>Cancel</button><button id="confirmAccept" class="primary">Continue</button></div></dialog>
-<dialog id="helpDialog" aria-labelledby="helpTitle"><div class="dialog-head"><h2 id="helpTitle">A little ink. A lot of possibility.</h2><button class="icon-btn" data-close aria-label="Close"><svg class="icon"><use href="#i-close"/></svg></button></div><div class="dialog-body help-block"><p>Write or draw directly on the paper with your <strong>mouse, finger, or stylus</strong>. Pick a pen, choose a color, and make your mark.</p><h3>Find your flow</h3><p><strong>Pen</strong> has a consistent line. <strong>Brush</strong> changes width with stylus pressure or drawing speed. <strong>Highlight</strong> lays down translucent ink. <strong>Eraser</strong> removes ink, not the paper. Increase <strong>Steady hand</strong> to smooth small wobbles.</p><h3>Make room</h3><p>Use <strong>Move</strong> or hold Space and drag. Two fingers pan and pinch the sheet. The first, unfinished stroke is canceled when a two-finger gesture starts. Scroll to zoom; <strong>Fit</strong> brings the whole page back.</p><h3>Take it with you</h3><p><strong>Export image</strong> saves PNG, JPEG, WebP (when your browser can encode it), SVG, or BMP. Transparent PNG is useful for signatures and overlays. Crop to ink removes empty margins. Guides are off in exports unless you include them.</p><p><strong>File → Save editable project</strong> keeps the vector marks and paper settings in JSON. Image files are finished outputs, not editable project backups. This app does not recognize handwriting or turn it into typed text.</p><h3>Your work, your device</h3><p>Autosave uses this browser's storage. It is not cloud backup: clearing site data, private browsing, or moving to another browser can remove it. Export JSON for a durable copy. No telemetry, accounts, remote fonts, or drawing uploads.</p><h3>Keyboard shortcuts</h3><div class="keyboard-grid"><div>Pen / Brush<span class="kbd">P / B</span></div><div>Highlight / Eraser<span class="kbd">H / E</span></div><div>Move<span class="kbd">V / Space</span></div><div>Fit paper<span class="kbd">0</span></div><div>Undo<span class="kbd">Ctrl/⌘ Z</span></div><div>Redo<span class="kbd">Ctrl/⌘ Shift Z</span></div><div>Save project<span class="kbd">Ctrl/⌘ S</span></div><div>Export image<span class="kbd">Ctrl/⌘ E</span></div><div>Change width<span class="kbd">[ / ]</span></div><div>Cancel mark<span class="kbd">Esc</span></div></div><h3>Advanced mode</h3><p>Add lines, arrows, boxes, ovals, and typed labels. Hold Shift while drawing shapes to constrain them. Pen-only ink makes fingers navigate instead of draw; it is not hardware-level palm rejection. Theme changes affect the interface, not the exported artwork.</p><p class="small muted">INKWELL v1.0.0 · Green Shoe Garage<br>Freehand drawing requires pointing input; the surrounding controls support keyboard navigation.</p></div></dialog>
+<dialog id="helpDialog" aria-labelledby="helpTitle"><div class="dialog-head"><h2 id="helpTitle">A little ink. A lot of possibility.</h2><button class="icon-btn" data-close aria-label="Close"><svg class="icon"><use href="#i-close"/></svg></button></div><div class="dialog-body help-block"><p>Write or draw directly on the paper with your <strong>mouse, finger, or stylus</strong>. Pick a pen, choose a color, and make your mark.</p><h3>Find your flow</h3><p><strong>Pen</strong> has a consistent line. <strong>Brush</strong> changes width with stylus pressure or drawing speed. <strong>Highlight</strong> lays down translucent ink. <strong>Eraser</strong> removes ink, not the paper. Increase <strong>Steady hand</strong> to smooth small wobbles.</p><h3>Make room</h3><p>Use <strong>Move</strong> or hold Space and drag. Two fingers pan and pinch the sheet. An immediate two-finger gesture cancels only its starting dot; ink already drawn is kept. Scroll to zoom; <strong>Fit</strong> brings the whole page back.</p><h3>Take it with you</h3><p><strong>Export image</strong> saves PNG, JPEG, WebP (when your browser can encode it), SVG, or BMP. Transparent PNG is useful for signatures and overlays. Crop to ink removes empty margins. Guides are off in exports unless you include them.</p><p><strong>File → Save editable project</strong> keeps the vector marks and paper settings in JSON. Image files are finished outputs, not editable project backups. This app does not recognize handwriting or turn it into typed text.</p><h3>Your work, your device</h3><p>Autosave uses this browser's storage. It is not cloud backup: clearing site data, private browsing, or moving to another browser can remove it. Export JSON for a durable copy. No telemetry, accounts, remote fonts, or drawing uploads.</p><h3>Keyboard shortcuts</h3><div class="keyboard-grid"><div>Pen / Brush<span class="kbd">P / B</span></div><div>Highlight / Eraser<span class="kbd">H / E</span></div><div>Move<span class="kbd">V / Space</span></div><div>Fit paper<span class="kbd">0</span></div><div>Undo<span class="kbd">Ctrl/⌘ Z</span></div><div>Redo<span class="kbd">Ctrl/⌘ Shift Z</span></div><div>Save project<span class="kbd">Ctrl/⌘ S</span></div><div>Export image<span class="kbd">Ctrl/⌘ E</span></div><div>Change width<span class="kbd">[ / ]</span></div><div>Cancel mark<span class="kbd">Esc</span></div></div><h3>Advanced mode</h3><p>Add lines, arrows, boxes, ovals, and typed labels. Hold Shift while drawing shapes to constrain them. Pen-only ink makes fingers navigate instead of draw; it is not hardware-level palm rejection. Theme changes affect the interface, not the exported artwork.</p><p class="small muted">INKWELL v1.0.1 · Green Shoe Garage<br>Freehand drawing requires pointing input; the surrounding controls support keyboard navigation.</p></div></dialog>
 <input id="projectFile" type="file" accept=".json,application/json" hidden>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <div id="printArea"><img id="printImage" alt="Drawing prepared for printing"></div>
@@ -117,7 +122,7 @@ dialog{border:1px solid var(--line);border-radius:15px;background:var(--panel);c
 <script>
 'use strict';
 (() => {
-const VERSION = '1.0.0', APP = 'INKWELL', SCHEMA = 1;
+const VERSION = '1.0.1', APP = 'INKWELL', SCHEMA = 1;
 const MAX_PIXELS = 12582912, EXPORT_PIXELS = 16777216, MAX_POINTS = 400000, MAX_MARKS = 5000;
 const $ = id => document.getElementById(id);
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -156,12 +161,12 @@ const channel = typeof BroadcastChannel === 'function' ? new BroadcastChannel('i
 const tabId=uid();
 function showToast(message, error=false) { $('toast').textContent=message; $('toast').classList.toggle('error',error); $('toast').hidden=false; clearTimeout(toastTimer); toastTimer=setTimeout(()=>$('toast').hidden=true,error?6500:3500); }
 function setStatus(state, text) { $('saveLed').dataset.state=state; $('saveStatus').textContent=text; }
-function openDialog(id) { stopMark(true); closeInspector(); const d=$(id); if(!d.open) d.showModal(); }
+function openDialog(id) { resetInput(false); closeInspector(); const d=$(id); if(!d.open) d.showModal(); }
 function closeDialog(id) { $(id).close(); }
 function ask(title, message, action, label='Continue', backup=true) { $('confirmTitle').textContent=title; $('confirmMessage').textContent=message; $('confirmAccept').textContent=label; $('confirmBackup').hidden=!backup; confirmAction=action; openDialog('confirmDialog'); }
 function paperName(p) { if(p.width/p.height>=2.8) return 'SIGNATURE'; return p.width===p.height?'SQUARE':p.width>p.height?'LANDSCAPE':'PORTRAIT'; }
 function setProject(next,{record=true,fit=false,save=true}={}) {
- stopMark(true); project=next; cacheBoundsProject=null;
+ resetInput(true); project=next; cacheBoundsProject=null;
  if(record){ history=history.slice(0,historyIndex+1);history.push(project);if(history.length>101)history.shift();historyIndex=history.length-1; }
  renderAll(); syncPaper(); syncHistory(); if(fit)fitView();
  if(save) markDirty();
@@ -321,11 +326,38 @@ function zoomAt(factor,clientX=null,clientY=null) {
  const r=stage.getBoundingClientRect(),x=clientX===null?r.width/2:clientX-r.left,y=clientY===null?r.height/2:clientY-r.top;
  const wx=(x-view.tx)/view.scale,wy=(y-view.ty)/view.scale;view.scale=clamp(view.scale*factor,.04,8);view.tx=x-wx*view.scale;view.ty=y-wy*view.scale;view.fitted=false;applyView();
 }
-// Unified pointer handling: pointer capture keeps strokes continuous outside the
-// sheet; a second touch cancels the unfinished mark and starts a viewport gesture.
-function startGesture() {
- const pts=[...pointers.values()].filter(p=>p.type==='touch');if(pts.length<2)return;
- stopMark(true);panning=null;ignoreUntilUp=true;
+// Input lifetime is separate from preview frames. A browser interruption must
+// retain points already delivered, not silently erase them. Explicit Escape and
+// a provisional first-finger dot at the start of a pinch can still be canceled.
+function releaseCapture(id) {
+ try { if(stage.hasPointerCapture(id))stage.releasePointerCapture(id); } catch(_) {}
+}
+function forgetPointer(id) {
+ pointers.delete(id);
+ if(panning?.id===id){panning=null;stage.classList.remove('panning');}
+ if(gesture&&[...pointers.values()].filter(p=>p.type==='touch').length<2)gesture=null;
+ if(pointers.size===0){ignoreUntilUp=false;gesture=null;}
+ // Clear ownership before releasing capture; lostpointercapture can re-enter.
+ releaseCapture(id);
+}
+function finishPointer(id) {
+ if(active?.id===id)stopMark(false);
+ forgetPointer(id);
+}
+function resetInput(cancel=false) {
+ stopMark(cancel);
+ const ids=[...pointers.keys()];pointers.clear();panning=null;gesture=null;ignoreUntilUp=false;
+ stage.classList.remove('panning');for(const id of ids)releaseCapture(id);
+}
+function provisionalTouch(e) {
+ return active?.pointerType==='touch'&&active.mark.type==='stroke'&&
+   active.mark.points.length===1&&e.timeStamp-active.startedAt<180;
+}
+function startGesture(e) {
+ const pts=[...pointers.values()].filter(p=>p.type==='touch');if(pts.length<2||gesture)return;
+ // Keep a real line already drawn before the second finger arrived. Only an
+ // immediate, stationary first contact is a provisional navigation dot.
+ stopMark(provisionalTouch(e));panning=null;stage.classList.remove('panning');ignoreUntilUp=true;
  const a=pts[0],b=pts[1],cx=(a.x+b.x)/2,cy=(a.y+b.y)/2;
  gesture={distance:Math.max(1,Math.hypot(a.x-b.x,a.y-b.y)),scale:view.scale,anchor:localPoint(cx,cy)};
 }
@@ -343,26 +375,38 @@ function pointPressure(e,speed=0) {
 function beginMark(e) {
  if(!initialized||e.target.closest('button'))return;
  if(e.pointerType==='mouse'&&e.button!==0&&e.button!==1)return;
+ if(e.pointerType==='pen'&&!(e.buttons&33))return;
  e.preventDefault();stage.focus({preventScroll:true});
- try{stage.setPointerCapture(e.pointerId);}catch(_){}
- pointers.set(e.pointerId,{x:e.clientX,y:e.clientY,type:e.pointerType});
- // Ignore touch contacts while a physical pen stroke is in progress.
+ // Do not register palm contacts during pen ink; otherwise they can remain in
+ // the touch map after the pen lifts and turn the next stroke into a false pinch.
  if(active?.pointerType==='pen'&&e.pointerType==='touch')return;
- if(e.pointerType==='touch'&&[...pointers.values()].filter(p=>p.type==='touch').length>=2){startGesture();return;}
+ // A fresh down for the same pointer proves its previous interaction ended,
+ // even when its up was lost. Finish at the LAST known point, not this new down.
+ if(pointers.has(e.pointerId)||active?.id===e.pointerId)finishPointer(e.pointerId);
+ // A new primary contact starts a fresh stream of its device type. Retire stale
+ // contacts from a missed release without disturbing another input device.
+ if(e.isPrimary){
+  for(const [id,p] of [...pointers])if(p.type===e.pointerType)finishPointer(id);
+ }
+ if(e.pointerType==='pen'&&(active?.pointerType==='touch'||gesture||panning))resetInput(provisionalTouch(e));
+ if(active&&active.pointerType!==e.pointerType)return;
+ pointers.set(e.pointerId,{x:e.clientX,y:e.clientY,type:e.pointerType});
+ try{stage.setPointerCapture(e.pointerId);}catch(_){/* Window listeners are the fallback. */}
+ if(e.pointerType==='touch'&&[...pointers.values()].filter(p=>p.type==='touch').length>=2){startGesture(e);return;}
  if(active||ignoreUntilUp)return;
  const pt=localPoint(e.clientX,e.clientY),outside=pt.x<0||pt.y<0||pt.x>project.paper.width||pt.y>project.paper.height;
  if(tool==='hand'||spaceHeld||e.button===1||outside||(prefs.penOnly&&e.pointerType==='touch')){
-  panning={id:e.pointerId,x:e.clientX,y:e.clientY,tx:view.tx,ty:view.ty};stage.classList.add('panning');return;
+  panning={id:e.pointerId,buttonMask:e.button===1?4:1,x:e.clientX,y:e.clientY,tx:view.tx,ty:view.ty};stage.classList.add('panning');return;
  }
- if(tool==='text'){textAnchor={x:round(pt.x),y:round(pt.y)};pointers.delete(e.pointerId);$('noteText').value='';openDialog('textDialog');setTimeout(()=>$('noteText').focus(),20);return;}
- const effective=e.button===5||e.buttons===32?'eraser':tool;
+ if(tool==='text'){textAnchor={x:round(pt.x),y:round(pt.y)};$('noteText').value='';openDialog('textDialog');setTimeout(()=>$('noteText').focus(),20);return;}
+ const effective=e.button===5||(e.buttons&32)?'eraser':tool;
  const common={id:uid(),color:prefs.color,opacity:effective==='eraser'?1:(prefs.opacities[effective]||100)/100,width:prefs.widths[effective]||4};
  const isStroke=['pen','brush','highlighter','eraser'].includes(effective),pressure=pointPressure(e);
  const mark=isStroke?{...common,type:'stroke',tool:effective,points:[[round(pt.x),round(pt.y),round(pressure)]]}:{...common,type:effective,x1:pt.x,y1:pt.y,x2:pt.x,y2:pt.y,fill:prefs.fill};
- active={id:e.pointerId,pointerType:e.pointerType,mark,lastRaw:pt,lastTime:e.timeStamp,lastPressure:pressure};schedulePreview();
+ active={id:e.pointerId,pointerType:e.pointerType,buttonMask:(e.buttons&32)?32:1,mark,startedAt:e.timeStamp,lastRaw:pt,lastTime:e.timeStamp,lastPressure:pressure};schedulePreview();
 }
 function addPoint(e,final=false) {
- if(!active)return;
+ if(!active||!finite(e.clientX)||!finite(e.clientY))return;
  const pt=localPoint(e.clientX,e.clientY),m=active.mark;
  if(m.type!=='stroke'){
   let x=pt.x,y=pt.y;
@@ -373,36 +417,68 @@ function addPoint(e,final=false) {
  const last=m.points[m.points.length-1],dt=Math.max(1,e.timeStamp-active.lastTime),dist=Math.hypot(pt.x-active.lastRaw.x,pt.y-active.lastRaw.y),speed=dist/dt;
  let pressure=pointPressure(e,speed);pressure=.7*active.lastPressure+.3*pressure;
  const alpha=final?1:1-prefs.smoothing/100*.82;
- const x=clamp(last[0]+(pt.x-last[0])*alpha,-32768,32768),y=clamp(last[1]+(pt.y-last[1])*alpha,-32768,32768);
- if(Math.hypot(x-last[0],y-last[1])>=.24||(Math.abs(pressure-last[2])>.06&&m.tool==='brush'))m.points.push([round(x),round(y),round(pressure)]);
+ const x=round(clamp(last[0]+(pt.x-last[0])*alpha,-32768,32768)),y=round(clamp(last[1]+(pt.y-last[1])*alpha,-32768,32768));
+ const moved=final?(x!==last[0]||y!==last[1]):Math.hypot(x-last[0],y-last[1])>=.24;
+ if(moved||(Math.abs(pressure-last[2])>.06&&m.tool==='brush'))m.points.push([x,y,round(pressure)]);
  active.lastRaw=pt;active.lastTime=e.timeStamp;active.lastPressure=pressure;
 }
+function consumePoints(e,final=false) {
+ // Some contexts lack this optional API. A failed/empty call must not interrupt
+ // the main event stream. Process delivered samples, never predicted geometry.
+ let events=[];
+ try{if(typeof e.getCoalescedEvents==='function')events=e.getCoalescedEvents()||[];}catch(_){}
+ if(events.length){
+  for(const ev of events)addPoint(ev);
+  const last=events[events.length-1];
+  if(final||last.clientX!==e.clientX||last.clientY!==e.clientY)addPoint(e,final);
+ }else addPoint(e,final);
+}
 function movePointer(e) {
- if(pointers.has(e.pointerId))pointers.set(e.pointerId,{x:e.clientX,y:e.clientY,type:e.pointerType});
+ if(!pointers.has(e.pointerId))return;
+ // A hover event following a missed up must not connect the drawing to the
+ // hover position or leave the next down locked out. Buttons are a bitmask.
+ const mask=active?.id===e.pointerId?active.buttonMask:panning?.id===e.pointerId?panning.buttonMask:1;
+ if((e.pointerType==='mouse'||e.pointerType==='pen')&&!(e.buttons&mask)){finishPointer(e.pointerId);return;}
+ pointers.set(e.pointerId,{x:e.clientX,y:e.clientY,type:e.pointerType});
  if(gesture){e.preventDefault();updateGesture();return;}
  if(panning?.id===e.pointerId){e.preventDefault();view.tx=panning.tx+e.clientX-panning.x;view.ty=panning.ty+e.clientY-panning.y;view.fitted=false;applyView();return;}
  if(active?.id!==e.pointerId)return;
- e.preventDefault();const events=typeof e.getCoalescedEvents==='function'?e.getCoalescedEvents():[];
- for(const ev of events.length?events:[e])addPoint(ev);schedulePreview();
+ e.preventDefault();consumePoints(e);schedulePreview();
 }
 function stopMark(cancel=false) {
  if(drawFrame){cancelAnimationFrame(drawFrame);drawFrame=0;}
  const a=active;active=null;clearPreview();
- if(a&&!cancel){const m=a.mark;if(m.type==='stroke'||Math.hypot(m.x2-m.x1,m.y2-m.y1)>.5)commitMark(m);}
+ if(a&&!cancel){
+  const m=a.mark;
+  // Flush the final known sample so smoothing cannot cut off a small stroke or
+  // its tail. Cancel/lost-capture/blur coordinates are NOT drawing samples.
+  if(m.type==='stroke'&&m.points.length<20000){
+   const last=m.points[m.points.length-1],x=round(clamp(a.lastRaw.x,-32768,32768)),y=round(clamp(a.lastRaw.y,-32768,32768));
+   if(x!==last[0]||y!==last[1])m.points.push([x,y,round(a.lastPressure)]);
+  }
+  if(m.type==='stroke'||Math.hypot(m.x2-m.x1,m.y2-m.y1)>.5)commitMark(m);
+ }
  $('emptyHint').hidden=project.marks.length>0;
 }
-function endPointer(e,cancel=false) {
- if(active?.id===e.pointerId){if(!cancel)addPoint(e,true);stopMark(cancel);}
- pointers.delete(e.pointerId);
- if(panning?.id===e.pointerId){panning=null;stage.classList.remove('panning');}
- if(gesture&&[...pointers.values()].filter(p=>p.type==='touch').length<2)gesture=null;
- if(pointers.size===0){ignoreUntilUp=false;gesture=null;}
+function endPointer(e,interrupted=false) {
+ if(!pointers.has(e.pointerId)&&active?.id!==e.pointerId)return;
+ if(active?.id===e.pointerId){if(!interrupted)consumePoints(e,true);stopMark(false);}
+ forgetPointer(e.pointerId);
 }
-stage.addEventListener('pointerdown',beginMark);
-stage.addEventListener('pointermove',movePointer);
-stage.addEventListener('pointerup',e=>endPointer(e));
-stage.addEventListener('pointercancel',e=>endPointer(e,true));
-stage.addEventListener('lostpointercapture',e=>{if(active?.id===e.pointerId||pointers.has(e.pointerId))endPointer(e,true);});
+// Exactly one movement/end route. Capture-phase window listeners still receive
+// an owned pointer when capture fails or the pointer leaves the drawing stage.
+stage.addEventListener('pointerdown',beginMark,{passive:false});
+window.addEventListener('pointermove',movePointer,{capture:true,passive:false});
+window.addEventListener('pointerup',e=>endPointer(e),{capture:true,passive:false});
+window.addEventListener('pointercancel',e=>endPointer(e,true),{capture:true,passive:false});
+stage.addEventListener('lostpointercapture',e=>{
+ if(!pointers.has(e.pointerId))return;
+ // A delayed notification must not end a newly captured stream for the same ID.
+ try{if(stage.hasPointerCapture(e.pointerId))return;}catch(_){}
+ // With contact still down, continue via the window fallback; otherwise retain
+ // the captured ink and finish. Normal up has already removed this pointer.
+ if(e.buttons===0)finishPointer(e.pointerId);
+});
 stage.addEventListener('contextmenu',e=>e.preventDefault());
 stage.addEventListener('wheel',e=>{if(e.target.closest('button'))return;e.preventDefault();if(active)return;zoomAt(Math.exp(-clamp(e.deltaY,-150,150)*.003),e.clientX,e.clientY);},{passive:false});
 new ResizeObserver(()=>{if(view.fitted)fitView();}).observe(stage);
@@ -456,8 +532,8 @@ async function initializeStorage() {
  else if(!dirty)setStatus('saved','Ready · saved locally after a mark');
  initialized=true;
 }
-document.addEventListener('visibilitychange',()=>{if(document.hidden){stopMark(false);saveNow();}});
-window.addEventListener('pagehide',()=>{stopMark(false);saveNow();});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){spaceHeld=false;resetInput(false);saveNow();}});
+window.addEventListener('pagehide',()=>{spaceHeld=false;resetInput(false);saveNow();});
 window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
 // Export helpers. Erasers operate on the ink layer only; paper and guides are
 // composed afterwards. Native codecs are checked so PNG cannot masquerade as WebP.
@@ -543,7 +619,7 @@ async function makeImage(options,doc=project) {
 }
 const filename = () => (project.title.replace(/[<>:"/\\|?*\u0000-\u001f]/g,'-').trim().replace(/[. ]+$/,'').slice(0,85)||'Untitled sketch');
 function triggerDownload(blob,name) {const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),120000);}
-function saveProjectFile() {stopMark(false);const blob=new Blob([JSON.stringify({...project,version:VERSION,exported:new Date().toISOString()})],{type:'application/json'});triggerDownload(blob,`${filename()}.inkwell.json`);showToast('Editable JSON prepared. Keep it as your project backup.');}
+function saveProjectFile() {resetInput(false);const blob=new Blob([JSON.stringify({...project,version:VERSION,exported:new Date().toISOString()})],{type:'application/json'});triggerDownload(blob,`${filename()}.inkwell.json`);showToast('Editable JSON prepared. Keep it as your project backup.');}
 let previewTimer=0,exportGeneration=0,generating=false;
 function clearExportReady() {exportGeneration++;$('exportReady').hidden=true;lastExportFile=null;if(lastExportURL){URL.revokeObjectURL(lastExportURL);lastExportURL=null;}}
 function updateExport() {
@@ -601,7 +677,7 @@ function syncTool(){
  stage.style.cursor=tool==='hand'?'grab':tool==='text'?'text':'crosshair';
  document.querySelectorAll('[data-size]').forEach(b=>b.classList.toggle('active',Number(b.dataset.size)===width));
 }
-function setTool(value){stopMark(false);tool=value;syncTool();}
+function setTool(value){resetInput(false);tool=value;syncTool();}
 function setMode(mode){prefs.mode=mode;document.documentElement.dataset.mode=mode;document.querySelectorAll('button[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));if(mode==='easy'&&!['pen','brush','highlighter','eraser','hand'].includes(tool))setTool('pen');savePrefs();}
 function setTheme(theme){prefs.theme=theme;document.documentElement.dataset.theme=theme;$('themeSelect').value=theme;savePrefs();}
 function closeInspector(){if(window.innerWidth<=860){$('workspace').classList.remove('inspector-open');$('inspectorToggle').setAttribute('aria-expanded','false');}}
@@ -681,7 +757,7 @@ window.addEventListener('keydown',e=>{
  }
  if(e.altKey)return;
  if(e.code==='Space'){e.preventDefault();spaceHeld=true;if(!active)stage.style.cursor='grab';return;}
- if(k==='escape'){stopMark(true);panning=null;gesture=null;pointers.clear();ignoreUntilUp=false;stage.classList.remove('panning');closeInspector();return;}
+ if(k==='escape'){resetInput(true);closeInspector();return;}
  if(k==='0'){e.preventDefault();fitView();return;}
  if(k==='+'||k==='='){e.preventDefault();zoomAt(1.25);return;}
  if(k==='-'){e.preventDefault();zoomAt(.8);return;}
@@ -690,7 +766,7 @@ window.addEventListener('keydown',e=>{
  if(tools[k]){if(!['pen','brush','highlighter','eraser','hand'].includes(tools[k])&&prefs.mode!=='advanced')setMode('advanced');setTool(tools[k]);}
 });
 window.addEventListener('keyup',e=>{if(e.code==='Space'){spaceHeld=false;syncTool();}});
-window.addEventListener('blur',()=>{spaceHeld=false;stopMark(false);panning=null;gesture=null;pointers.clear();ignoreUntilUp=false;stage.classList.remove('panning');});
+window.addEventListener('blur',()=>{spaceHeld=false;resetInput(false);syncTool();});
 // Built-in sample: editable generated vector marks, never loaded on first use.
 function sampleProject(){
  const d=freshProject('A little ink');d.paper.pattern='dots';const marks=d.marks;
@@ -722,7 +798,7 @@ async function setupOffline(){
  if(location.protocol==='file:'){$('offlineStatus').textContent='Offline-ready · portable file';return;}
  if(!('serviceWorker' in navigator)||!window.isSecureContext){$('offlineStatus').textContent='Use HTTPS for offline website caching';return;}
  const link=document.createElement('link');link.rel='manifest';link.href='./manifest.webmanifest';document.head.append(link);
- try{await navigator.serviceWorker.register('./sw.js',{scope:'./'});await navigator.serviceWorker.ready;$('offlineStatus').textContent='Offline website cache ready';}
+ try{await navigator.serviceWorker.register('./sw.js',{scope:'./',updateViaCache:'none'});await navigator.serviceWorker.ready;$('offlineStatus').textContent='Offline website cache ready';}
  catch(_){$('offlineStatus').textContent='Offline cache unavailable · drawing still works';}
 }
 setMode(prefs.mode);setTheme(prefs.theme);syncTool();renderAll();syncPaper();syncHistory();fitView();

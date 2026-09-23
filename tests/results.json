@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.1",
   "mode": "sandbox: real canvas/codecs; mocked storage and file delivery",
   "browser": "144.0.7559.96",
   "checks": [
@@ -55,7 +55,7 @@
     "New phone workspace uses portrait paper",
     "Phone viewport has no horizontal page overflow",
     "Native touch event sequence draws a finger stroke",
-    "Two-finger navigation cancels the unfinished finger mark",
+    "Immediate two-finger navigation cancels its provisional starting dot",
     "Pinch gesture changes canvas zoom",
     "Mobile settings open as a usable side panel",
     "Pen-only mode turns finger input into navigation, not ink",

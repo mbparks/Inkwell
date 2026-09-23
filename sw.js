@@ -1,7 +1,8 @@
+/* SPDX-License-Identifier: GPL-3.0-only; Copyright (C) 2026 Michael Parks / Green Shoe Garage. */
 /* INKWELL: same-origin offline shell only. No telemetry or drawing uploads. */
 'use strict';
 const PREFIX = 'inkwell@' + self.registration.scope + ':';
-const CACHE = PREFIX + '1.0.0';
+const CACHE = PREFIX + '1.0.1';
 const ROOT = self.registration.scope;
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon.svg'].map(p => new URL(p, ROOT).href);
 self.addEventListener('install', event => {

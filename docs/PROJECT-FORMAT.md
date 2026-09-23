@@ -6,7 +6,7 @@ An editable project is a JSON object with `app: "INKWELL"` and `schema: 1`.
 {
   "app": "INKWELL",
   "schema": 1,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "id": "application-generated-identifier",
   "title": "My sketch",
   "created": "2026-09-22T00:00:00.000Z",
@@ -69,3 +69,7 @@ const svg = Inkwell.toSVG(); // current export-panel settings
 ```
 
 The UI file importer supplies confirmation before replacing non-empty work. The programmatic `loadProject` method intentionally omits that UI confirmation; callers must obtain any required user consent. The API does not upload or fetch project content.
+
+## v1.0.1 compatibility
+
+The input-reliability patch retains schema 1. Version metadata does not change how older INKWELL projects are parsed. Existing storage keys and exported mark structures are unchanged.

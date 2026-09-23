@@ -1,7 +1,7 @@
 # INKWELL
 ### A little ink. A lot of possibility.
 
-**A Green Shoe Garage Field Instrument · v1.0.0**
+**A Green Shoe Garage Field Instrument · v1.0.1**
 
 Handwrite notes, draw sketches, make signatures, and export your marks as images. Use a mouse, a finger, or a stylus. The canvas is the main event; the controls stay out of its way.
 
@@ -11,7 +11,7 @@ Handwrite notes, draw sketches, make signatures, and export your marks as images
 
 **No build step. No account. No runtime dependencies.**
 
-On a desktop, open `index.html` in a current browser. Its HTML, CSS, JavaScript, and interface icons are self-contained. You can also use the separately supplied `INKWELL-v1.0.0.html` portable file; it contains the same application.
+On a desktop, open `index.html` in a current browser. Its HTML, CSS, JavaScript, and interface icons are self-contained. You can also use the separately supplied `INKWELL-v1.0.1.html` portable file; it contains the same application.
 
 For a website, upload these four files together into one directory, such as `/inkwell/`:
 
@@ -27,6 +27,12 @@ Open that directory through your website, with a trailing slash. Relative paths 
 For phone or tablet use, open the hosted page in the browser. A file viewer or attachment preview is not necessarily a JavaScript-capable browser. The phone layout starts with portrait paper; desktop starts with landscape paper. A saved project keeps its own dimensions.
 
 The application code in this package has **not** been deployed to a public website for you.
+
+### Updating from v1.0.0
+
+Before replacing anything, use **File → Save editable project** to download a JSON backup. Replace `index.html`, `sw.js`, `manifest.webmanifest`, and `icon.svg` in the same website directory. Reload the page and confirm **v1.0.1** appears in the interface. The service-worker cache version has also been updated. Do not clear site data to update: that can remove the browser's saved drawing.
+
+Schema 1 and the existing storage keys are unchanged, so earlier JSON projects remain compatible. For a portable copy, open the new HTML and import your JSON backup if the browser treats the new file as a separate storage location.
 
 ## Draw → export → keep the original
 
@@ -59,7 +65,9 @@ Plain, ruled, grid, and dot paper are available, along with custom paper colors 
 
 Draw with the primary mouse button or one finger. Select Move, hold Space while dragging, or use the middle mouse button to pan. Scroll to zoom around the pointer. **Fit** brings the sheet back into view.
 
-Two fingers pan and pinch-zoom. Adding a second finger cancels the unfinished first-finger stroke, preventing an accidental ink line from becoming part of the drawing. It does not remove previously committed strokes.
+Two fingers pan and pinch-zoom. An immediate stationary first contact is treated as a provisional starting dot and discarded when the second finger arrives. If you have already written a line, it is committed before navigation starts rather than erased.
+
+If the browser interrupts drawing, captured points are kept as a partial mark. A missed release is recovered on hover or a new down so it cannot block the next stroke. Use Undo to remove an unwanted partial mark. Escape remains an explicit cancel. These safeguards cannot reconstruct input that a device or browser never delivered.
 
 **Pen-only ink** makes finger input navigate instead of draw. It depends on the browser distinguishing `pen` from `touch`; it is not hardware-level palm rejection. Physical stylus behavior depends on the device and browser.
 
@@ -150,6 +158,9 @@ examples/
   export-validation.inkwell.json  Small erasing/transparency fixture
 tests/
   test_inkwell.py                  Browser/UI/export regression checks
+  test_input_regressions.py        Input lifetime and interruption regressions
+  input-results.json              v1.0.1 input verification
+  input-baseline-v1.0.0.json       The same cases run against the previous release
   test_service_worker.mjs         Offline-cache logic checks with adapters
   results.json                    Recorded UI/export check results
 ```
@@ -168,6 +179,7 @@ For automated browser testing, use Python with Playwright and Pillow:
 python -m pip install playwright pillow
 python -m playwright install chromium
 python tests/test_inkwell.py
+python tests/test_input_regressions.py --browser /path/to/chromium
 ```
 
 A system Chromium can be selected with `--browser /path/to/chromium`. A restricted environment that blocks navigation can use `--sandbox`; that mode renders the same HTML directly and substitutes storage/download adapters. It is not a substitute for real persistence or device tests.
@@ -178,7 +190,7 @@ Run the separate offline-shell logic checks with Node.js 18 or newer:
 node tests/test_service_worker.mjs
 ```
 
-The included run passed **66 browser/UI/export checks and 11 offline-shell logic checks**. The browser run used sandbox adapters for storage and file-save delivery. Native service-worker installation, native durable storage, OS save/share/print dialogs, and physical iPhone/Safari behavior are not verified by that run. See [the complete test report](docs/TEST-REPORT.md).
+The included run passed **33 focused input regressions, 66 browser/UI/export checks, and 11 offline-shell logic checks**. The browser run used sandbox adapters for storage and file-save delivery. Native service-worker installation, native durable storage, OS save/share/print dialogs, and physical iPhone/Safari behavior are not verified by that run. See [the complete test report](docs/TEST-REPORT.md).
 
 To update a deployed release, increment the visible application version, service-worker cache version, manifest/metadata as appropriate, and changelog. Keep the four deployment files together. A restrictive hosting Content Security Policy must permit the application's inline script and style, or those must be externalized as a separate deployment change.
 
@@ -186,8 +198,14 @@ To update a deployed release, increment the visible application version, service
 
 The runtime bundles no third-party libraries. The browser APIs used are documented in these primary references:
 
+- [W3C: Pointer Events Level 3](https://www.w3.org/TR/pointerevents3/)
 - [MDN: Pointer events](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events)
+- [MDN: pointercancel](https://developer.mozilla.org/en-US/docs/Web/API/Element/pointercancel_event)
+- [MDN: lostpointercapture](https://developer.mozilla.org/en-US/docs/Web/API/Element/lostpointercapture_event)
+- [MDN: coalesced input events](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/getCoalescedEvents)
 - [MDN: Canvas toBlob and codec fallbacks](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob)
 - [MDN: Service workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers)
 
-No repository license has been selected in this package. Choose the license you intend to publish under before sharing the source publicly.
+## License
+
+Copyright (C) 2026 Michael Parks / Green Shoe Garage. INKWELL source is licensed under **GNU General Public License version 3 only** (`GPL-3.0-only`). See [LICENSE](LICENSE) for the full terms. No warranty is provided. Artwork you create is not automatically licensed under the application source license.
